@@ -1,10 +1,12 @@
 // Fil: src/app/page/LoginForm.tsx
 "use client";
+import { useRouter } from "next/navigation";
 import { UserArray } from "../data/users";
 import { useState } from "react";
 import { UseUserContext } from "@/utils/context";
 import { UserContextType } from "@/utils/types";
-import { useRouter } from "next/navigation";
+
+
 
 const LoginForm = () => {
   const [userInput, setUserInput] = useState<string>("");
@@ -20,6 +22,7 @@ const LoginForm = () => {
     } else {
       setUserNotFound(true);
       setUser(loggedInUser[0]);
+      localStorage.setItem("user", JSON.stringify(loggedInUser[0]));
       router.push("/page/Category");
     }
   };
@@ -58,7 +61,6 @@ const LoginForm = () => {
               className="border p-2 rounded w-full"
             />
           </div>
-
           <button
             type="button"
             onClick={handleClick}

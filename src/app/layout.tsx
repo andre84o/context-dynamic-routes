@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import { UserContextProvider } from "../utils/context";
+import HydrateUser from "@/utils/hydrateuser";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         
         <UserContextProvider>
+          <HydrateUser />
           <Header />
           {children}
         </UserContextProvider>
