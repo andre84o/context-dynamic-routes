@@ -10,7 +10,7 @@ const Header = () => {
   const { user } = UseUserContext() as UserContextType;
 
   return (
-    <header className="relative w-full h-20 bg-black text-white grid grid-cols-[auto_1fr_auto] items-center px-4">
+    <header className="relative w-full h-20 bg-black text-white grid grid-cols-3 items-center px-4">
       <div className="justify-self-start flex items-center gap-3">
        <Link href="/">
         <Image
