@@ -24,7 +24,7 @@ const Header = () => {
         {user && <p className="text-sm">Welcome, {user.name}</p>}
       </div>
       <h1 className="justify-self-center text-xl font-semibold">Recipes</h1>
-      <div className="justify-self-end">
+      <div className="justify-self-end w-80">
         {user && <Navigation />}
       </div>
     </header>

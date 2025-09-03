@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import { UserContextProvider } from "../utils/context";
 import HydrateUser from "@/utils/hydrateuser";
+import Providers from "@/utils/Muiproviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,12 +32,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        
-        <UserContextProvider>
-          <HydrateUser />
-          <Header />
-          {children}
-        </UserContextProvider>
+        <Providers>
+          <UserContextProvider>
+            <HydrateUser />
+            <Header />
+            {children}
+          </UserContextProvider>
+        </Providers>
       </body>
     </html>
   );
