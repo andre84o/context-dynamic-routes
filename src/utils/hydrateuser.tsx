@@ -1,17 +1,25 @@
-'use client';
+// Fil: src/utils/hydrateuser.tsx
+"use client";
 import { useEffect } from "react";
 import { UseUserContext } from "@/utils/context";
-import type { UserContextType } from "@/utils/types";
+import { UserContextType } from "@/utils/types";
 
 export default function HydrateUser() {
-  const { setUser } = UseUserContext() as UserContextType;
+  const { user, setUser } = UseUserContext() as UserContextType;
 
   useEffect(() => {
-    try {
+    // Svensk kommentar: Läs sparad user och se till att favouriteRecipes alltid är en array
+    if (!user) {
       const raw = localStorage.getItem("user");
-      if (raw) setUser(JSON.parse(raw));
-    } catch {}
-  }, [setUser]);
+      if (raw) {
+        try {
+          const u = JSON.parse(raw);
+          if (!Array.isArray(u.favouriteRecipes)) u.favouriteRecipes = [];
+          setUser(u);
+        } catch {}
+      }
+    }
+  }, [user, setUser]);
 
   return null;
 }

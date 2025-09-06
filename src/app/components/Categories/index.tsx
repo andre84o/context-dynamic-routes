@@ -1,16 +1,16 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { UserContextType } from "@/utils/types";
+import { UseUserContext } from "@/utils/context";
 import FavoriteButton from "@/components/FavoriteButton";
+import { Category } from "@/utils/types";
 
-type Category = {
-  idCategory: string;
-  strCategory: string;
-  strCategoryThumb: string;
-  strCategoryDescription: string;
-};
 
-export default function CategoriesPage() {
+
+export default function Home() {
+  const { user } = UseUserContext() as UserContextType;
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,7 +34,7 @@ export default function CategoriesPage() {
   return (
     <div className="font-sans flex flex-col items-center justify-center text-black min-h-[calc(100vh-48px)] bg-white">
       <main className="p-6 w-full flex flex-col justify-center items-center">
-        <h1 className="text-2xl font-semibold mb-4">Categories</h1>
+        <h1 className="text-2xl font-semibold mb-4">Meal Categories</h1>
         {error && <p>Error: {error}</p>}
 
         <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 justify-items-center">
@@ -44,10 +44,9 @@ export default function CategoriesPage() {
               className="border rounded p-4 w-64 flex flex-col"
             >
               <div className="relative">
-                {/* Svensk kommentar: Hjärtat uppe till vänster */}
                 <FavoriteButton
                   id={String(c.idCategory)}
-                  className="absolute left-2 top-2"
+                  className="absolute left-1 top-2 -translate-x-5 -translate-y-5"
                 />
                 <Image
                   src={c.strCategoryThumb}
