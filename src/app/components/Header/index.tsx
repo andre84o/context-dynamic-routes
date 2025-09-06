@@ -3,7 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { UserContextType } from "@/utils/types";
 import { UseUserContext } from "@/utils/context";
-import Navigation from "../Navigation";
+import Navigation from "@/components/Navigation";
+import LoginButton from "@/components/LoginButton";
 
 
 const Header = () => {
@@ -25,7 +26,7 @@ const Header = () => {
       </div>
       <h1 className="justify-self-center text-xl font-semibold">Recipes</h1>
       <div className="justify-self-end w-80">
-        {user && <Navigation />}
+        {user ? <Navigation /> : <LoginButton />}
       </div>
     </header>
   );

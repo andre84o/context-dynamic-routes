@@ -23,7 +23,7 @@ const LoginForm = () => {
       setUserNotFound(true);
       setUser(loggedInUser[0]);
       localStorage.setItem("user", JSON.stringify(loggedInUser[0]));
-      router.push("/page/Category");
+      router.push("/");
     }
   };
 
@@ -34,7 +34,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <section className="flex bg-transparent justify-center items-center w-full p-6 min-h-[calc(100vh-48px)]">
+      <section className="flex bg-transparent justify-center items-center w-full p-6 min-h-[calc(50vh-48px)]">
         <form className="flex flex-col gap-4 w-full max-w-md h-120 text-black bg-white/7 backdrop-blur-md border border-white/20 shadow-lg p-6 rounded-xl">
           <h1 className="text-xl font-semibold flex justify-center">Login</h1>
 
