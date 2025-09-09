@@ -29,7 +29,7 @@ export default function LoginPopupModal({
             <button
               onClick={onClose}
               aria-label="Close"
-              className="px-2 py-1 border rounded"
+              className="px-2 py-1 border rounded btn-action cursor-pointer"
             >
               Close
             </button>

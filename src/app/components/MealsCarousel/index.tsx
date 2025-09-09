@@ -38,7 +38,7 @@ export default function MealsCarousel({ category }: { category: string }) {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-2">
-        <span className="px-2 py-1 border rounded text-xs">
+        <span className="px-2 py-1 border rounded text-xs btn-action cursor-pointer">
           Your favorite category: {category}
         </span>
       </div>
@@ -63,7 +63,9 @@ export default function MealsCarousel({ category }: { category: string }) {
                 />
               </div>
               <p className="text-sm mt-2 text-center">{m.strMeal}</p>
-              <button className="mt-auto px-3 py-1 border rounded">View</button>
+              <button className="mt-auto px-3 py-1 border rounded cursor-pointer btn-action">
+                View
+              </button>
             </li>
           ))}
         </ul>

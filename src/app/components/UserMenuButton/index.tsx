@@ -32,7 +32,7 @@ export default function UserMenuButton() {
         aria-expanded={open}
         className={`h-10 w-10 flex items-center justify-center rounded border 
                     text-white border-white/40 hover:bg-white/10 
-                    ${open ? "ring-2 ring-white/60 bg-white/10" : ""}`}
+                    ${open ? "btn-action cursor-pointer ring-2 ring-white/60 bg-white/10" : ""}`}
         title="User menu"
       >
         <CiUser size={22} />

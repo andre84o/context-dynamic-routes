@@ -50,7 +50,7 @@ export default function FavoriteButton({
             : "Add to favorites"
           : "Sign in to save"
       }
-      className={`p-1 -translate-y-5 -translate-x-5 ${className}`}
+      className={`p-1 -translate-y-5 -translate-x-5 btn-action cursor-pointer${className}`}
       type="button"
     >
       {isFav ? <FaHeart size={22} /> : <CiHeart size={24} />}

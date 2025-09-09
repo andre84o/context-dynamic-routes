@@ -66,7 +66,9 @@ export default function Home() {
               <p className="text-sm mt-1">
                 {c.strCategoryDescription.slice(0, 100)}...
               </p>
-              <button className="mt-auto px-3 py-1 border rounded">View</button>
+              <button className="mt-auto px-3 py-1 border rounded btn-action cursor-pointer">
+                View
+              </button>
             </li>
           ))}
         </ul>

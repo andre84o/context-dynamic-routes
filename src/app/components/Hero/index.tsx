@@ -13,11 +13,14 @@ export default function Hero() {
         <p className="mt-2 text-sm">Handpicked meal for today.</p>
         <Link
           href="/page/category"
-          className="px-3 py-1 border rounded w-full text-center"
+          className="px-3 py-1 border rounded w-full text-center btn-action cursor-pointer"
         >
           View Menu
         </Link>
-        <button onClick={openLogin} className="px-3 py-1 border rounded w-full">
+        <button
+          onClick={openLogin}
+          className="px-3 py-1 border rounded w-full btn-action cursor-pointer"
+        >
           Log in
         </button>
       </div>

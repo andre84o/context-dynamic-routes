@@ -8,12 +8,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ProfilePage() {
-  const { user, getMealById } = UseUserContext() as UserContextType; // Svenska: API från context
+  const { user, getMealById } = UseUserContext() as UserContextType;
   const [meals, setMeals] = useState<Meal[]>([]);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    // Svenska: ladda alla favoriter, inte bara tre
     const load = async () => {
       if (!user?.favouriteRecipes?.length) {
         setMeals([]);
@@ -72,7 +71,7 @@ export default function ProfilePage() {
                       <p className="mt-2 text-center text-sm">{meal.strMeal}</p>
                       <Link
                         href={`/meal/${meal.idMeal}`}
-                        className="mt-auto px-3 py-1 border rounded"
+                        className="mt-auto px-3 py-1 border rounded btn-action cursor-pointer"
                       >
                         View
                       </Link>

@@ -19,7 +19,7 @@ export default function LoginButton() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="bg-white text-black px-3 py-1 rounded border cursor-pointer"
+        className="bg-white btn-action text-black px-3 py-1 rounded border cursor-pointer"
       >
         Sign in
       </button>
@@ -37,7 +37,7 @@ export default function LoginButton() {
               <h2 className="text-lg font-semibold">Sign in</h2>
               <button
                 onClick={() => setOpen(false)}
-                className="px-2 py-1 border rounded"
+                className="px-2 py-1 border rounded btn-action cursor-pointer"
               >
                 Close
               </button>

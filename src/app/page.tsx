@@ -57,10 +57,9 @@ export default function HomePage() {
                   >
                     {meal ? (
                       <>
-                        {/* Svenska: Klick på bild öppnar login-popup */}
                         <button
                           onClick={openLogin}
-                          className="w-full cursor-pointer"
+                          className="w-full btn-action cursor-pointer"
                         >
                           <Image
                             src={meal.strMealThumb}
@@ -71,25 +70,19 @@ export default function HomePage() {
                           />
                         </button>
 
-                        <h3 className="text-lg font-medium mt-2 text-center">
+                        <h3 className="text-lg btn-action font-medium mt-2 text-center">
                           {meal.strMeal}
                         </h3>
                         <p className="text-sm mt-1">{cat}</p>
 
                         {/* Svenska: Två lika stora knappar; Log in öppnar popup */}
-                        <div className="mt-auto grid grid-cols-2 gap-2 w-full">
+                        <div className="flex mt-auto gap-2 w-full">
                           <Link
                             href={`/meal/${meal.idMeal}`}
-                            className="px-3 py-1 border rounded w-full text-center cursor-pointer"
+                            className="px-3 py-1 btn-action border rounded w-full text-center cursor-pointer"
                           >
                             View Menu
                           </Link>
-                          <button
-                            onClick={openLogin}
-                            className="px-3 py-1 border rounded w-full"
-                          >
-                            Log in
-                          </button>
                         </div>
                       </>
                     ) : (
