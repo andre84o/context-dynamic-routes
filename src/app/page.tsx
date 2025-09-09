@@ -1,18 +1,20 @@
 // Fil: src/app/page/page.tsx
 "use client";
+
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { UseUserContext } from "@/utils/context";
-import { UserContextType } from "@/utils/types";
+import { UserContextType, Meal } from "@/utils/types";
 import Hero from "@/components/Hero";
 import MealsCarousel from "@/components/MealsCarousel";
-
-// Svensk kommentar: För utloggad visas Hero. För inloggad visas chip + karusell baserat på favouriteCategory.
-// Dessutom tre utvalda rätter på startsidan (Beef, Vegetarian, Chicken) som tidigare önskat.
-type Meal = { idMeal: string; strMeal: string; strMealThumb: string };
+import FavoritesSection from "@/components/FavoritesSection";
+import LoginModal from "@/components/LoginPopupModal";
 
 export default function HomePage() {
-  const { user } = UseUserContext() as UserContextType;
+  // Svenska: använd modal-styrning från context
+  const { user, getMealsByCategory, openLogin, showLogin, closeLogin } =
+    UseUserContext() as UserContextType;
 
   const picks = ["Beef", "Vegetarian", "Chicken"];
   const [featured, setFeatured] = useState<
@@ -21,75 +23,96 @@ export default function HomePage() {
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
+    if (user) return;
     const run = async () => {
       try {
-        const res = await Promise.all(
+        const results = await Promise.all(
           picks.map(async (cat) => {
-            const r = await fetch(
-              `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(
-                cat
-              )}`,
-              { cache: "no-store" }
-            );
-            if (!r.ok) throw new Error("Failed to load meals");
-            const data: { meals?: Meal[] } = await r.json();
-            return { cat, meal: data.meals?.[0] ?? null };
+            const list = await getMealsByCategory(cat); // från context
+            return { cat, meal: list?.[0] ?? null };
           })
         );
-        setFeatured(res);
+        setFeatured(results);
       } catch (e: any) {
         setErr(e.message ?? "Error");
       }
     };
     run();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user, getMealsByCategory]);
 
   return (
     <div className="font-sans flex flex-col items-center justify-center text-black min-h-[calc(100vh-48px)] bg-white">
       <main className="p-6 w-full max-w-5xl flex flex-col gap-8">
-        {/* Utloggad: visa Hero */}
-        {!user && <Hero />}
+        {!user ? (
+          <>
+            <Hero />
+            <section>
+              <h2 className="text-2xl font-semibold mb-4">Featured Meals</h2>
+              {err && <p>Error: {err}</p>}
+              <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 justify-items-center">
+                {featured.map(({ cat, meal }) => (
+                  <li
+                    key={cat}
+                    className="border rounded p-4 w-64 flex flex-col items-center"
+                  >
+                    {meal ? (
+                      <>
+                        {/* Svenska: Klick på bild öppnar login-popup */}
+                        <button
+                          onClick={openLogin}
+                          className="w-full cursor-pointer"
+                        >
+                          <Image
+                            src={meal.strMealThumb}
+                            alt={meal.strMeal}
+                            width={200}
+                            height={200}
+                            className="rounded"
+                          />
+                        </button>
 
-        {/* Inloggad: visa favoritkategori-chip + karusell om satt */}
-        {user && user.favouriteCategory && (
-          <MealsCarousel category={user.favouriteCategory} />
+                        <h3 className="text-lg font-medium mt-2 text-center">
+                          {meal.strMeal}
+                        </h3>
+                        <p className="text-sm mt-1">{cat}</p>
+
+                        {/* Svenska: Två lika stora knappar; Log in öppnar popup */}
+                        <div className="mt-auto grid grid-cols-2 gap-2 w-full">
+                          <Link
+                            href={`/meal/${meal.idMeal}`}
+                            className="px-3 py-1 border rounded w-full text-center cursor-pointer"
+                          >
+                            View Menu
+                          </Link>
+                          <button
+                            onClick={openLogin}
+                            className="px-3 py-1 border rounded w-full"
+                          >
+                            Log in
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-sm">No meal found for {cat}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </>
+        ) : (
+          <>
+            {user.favouriteCategory && (
+              <MealsCarousel category={user.favouriteCategory} />
+            )}
+            {/* Svenska: Home ska visa 3 senaste → FavoritesSection utan showAll */}
+            <FavoritesSection ids={user.favouriteRecipes ?? []} />
+          </>
         )}
-
-        {/* Tre utvalda rätter */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Featured Meals</h2>
-          {err && <p>Error: {err}</p>}
-          <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 justify-items-center">
-            {featured.map(({ cat, meal }) => (
-              <li
-                key={cat}
-                className="border rounded p-4 w-64 flex flex-col items-center"
-              >
-                {meal ? (
-                  <>
-                    <Image
-                      src={meal.strMealThumb}
-                      alt={meal.strMeal}
-                      width={200}
-                      height={140}
-                    />
-                    <h3 className="text-lg font-medium mt-2 text-center">
-                      {meal.strMeal}
-                    </h3>
-                    <p className="text-sm mt-1">{cat}</p>
-                    <button className="mt-auto px-3 py-1 border rounded">
-                      View
-                    </button>
-                  </>
-                ) : (
-                  <p className="text-sm">No meal found for {cat}</p>
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
       </main>
+
+      {/* Svenska: Modal styrs av context */}
+      <LoginModal open={showLogin} onClose={closeLogin} />
     </div>
   );
 }

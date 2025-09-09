@@ -1,10 +1,38 @@
 // Fil: src/app/page/profile/page.tsx
 "use client";
+
 import { UseUserContext } from "@/utils/context";
-import { UserContextType } from "@/utils/types";
+import type { UserContextType, Meal } from "@/utils/types";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function ProfilePage() {
-  const { user } = UseUserContext() as UserContextType;
+  const { user, getMealById } = UseUserContext() as UserContextType; // Svenska: API från context
+  const [meals, setMeals] = useState<Meal[]>([]);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Svenska: ladda alla favoriter, inte bara tre
+    const load = async () => {
+      if (!user?.favouriteRecipes?.length) {
+        setMeals([]);
+        setErr(null);
+        return;
+      }
+      try {
+        const results = await Promise.all(
+          user.favouriteRecipes.map((id) => getMealById(String(id)))
+        );
+        setMeals(results.filter(Boolean) as Meal[]);
+        setErr(null);
+      } catch {
+        setErr("Failed to load favorites");
+        setMeals([]);
+      }
+    };
+    load();
+  }, [user?.favouriteRecipes?.join(","), getMealById]);
 
   return (
     <main className="min-h-screen w-full flex items-center justify-center">
@@ -14,20 +42,47 @@ export default function ProfilePage() {
         </h1>
 
         {user ? (
-          <div className="space-y-2">
+          <div className="space-y-4">
             <p className="w-full p-2 border rounded-lg">Name: {user.name}</p>
             <p className="w-full p-2 border rounded-lg">
               Favourite Category: {user.favouriteCategory}
             </p>
 
-            {/* Svensk kommentar: Visa sparade favoriter som lista */}
-            <ul className="w-full p-2 border rounded-lg list-disc list-inside">
-              {user.favouriteRecipes?.length ? (
-                user.favouriteRecipes.map((id) => <li key={id}>{id}</li>)
+            <div className="w-full p-2 border rounded-lg">
+              <h2 className="font-semibold mb-2">All Favorites</h2>
+              {err && <p className="text-sm text-red-600">{err}</p>}
+
+              {meals.length ? (
+                <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                  {meals.map((meal) => (
+                    <li
+                      key={meal.idMeal}
+                      className="border rounded p-2 flex flex-col items-center"
+                    >
+                      {/* Svenska: Bilden länkar till måltidens sida */}
+                      <Link href={`/meal/${meal.idMeal}`}>
+                        <Image
+                          src={meal.strMealThumb}
+                          alt={meal.strMeal}
+                          width={150}
+                          height={150}
+                          className="rounded"
+                        />
+                      </Link>
+                      <p className="mt-2 text-center text-sm">{meal.strMeal}</p>
+                      <Link
+                        href={`/meal/${meal.idMeal}`}
+                        className="mt-auto px-3 py-1 border rounded"
+                      >
+                        View
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               ) : (
-                <li>None</li>
+                <p className="text-sm">No favorites yet.</p>
               )}
-            </ul>
+            </div>
           </div>
         ) : (
           <p>Please log in to view your profile.</p>

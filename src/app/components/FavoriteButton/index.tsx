@@ -4,8 +4,8 @@
 import { UseUserContext } from "@/utils/context";
 import { UserContextType } from "@/utils/types";
 import { useMemo } from "react";
-import { CiHeart } from "react-icons/ci"; // tomt hjärta
-import { FaHeart } from "react-icons/fa"; // ifyllt hjärta
+import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 
 export default function FavoriteButton({
   id,
@@ -14,18 +14,22 @@ export default function FavoriteButton({
   id: string;
   className?: string;
 }) {
+  const { user, setUser, openLogin } = UseUserContext() as UserContextType;
 
-  const { user, setUser } = UseUserContext() as UserContextType;
-
- 
   const isFav = useMemo(
     () => !!user?.favouriteRecipes?.includes(id),
     [user, id]
   );
 
+  const toggle = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    e?.stopPropagation(); // Svenska: stoppa klick från att bubbla upp till ev länk
 
-  const toggle = () => {
-    if (!user) return; 
+    if (!user) {
+      openLogin(); // Svenska: inte inloggad öppna popup
+      return;
+    }
+
+    // Svenska: uppdatera favoriter lokalt
     const list = new Set(user.favouriteRecipes ?? []);
     isFav ? list.delete(id) : list.add(id);
     const updated = { ...user, favouriteRecipes: Array.from(list) };
@@ -47,6 +51,7 @@ export default function FavoriteButton({
           : "Sign in to save"
       }
       className={`p-1 -translate-y-5 -translate-x-5 ${className}`}
+      type="button"
     >
       {isFav ? <FaHeart size={22} /> : <CiHeart size={24} />}
     </button>

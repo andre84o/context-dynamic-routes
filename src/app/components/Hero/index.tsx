@@ -1,28 +1,25 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { UseUserContext } from "@/utils/context";
+
 
 export default function Hero() {
+  const { openLogin } = UseUserContext(); // Svenska: Öppnar global modal via context
   return (
     <section className="w-full max-w-5xl mx-auto grid md:grid-cols-2 gap-6 items-center p-6">
-      <div>
+      <div className="mt-auto grid grid-cols-2 gap-2 w-full">
         <h2 className="text-3xl font-bold">Today’s Special</h2>
         <p className="mt-2 text-sm">Handpicked meal for today.</p>
         <Link
           href="/page/category"
-          className="inline-block mt-4 px-4 py-2 border rounded"
+          className="px-3 py-1 border rounded w-full text-center"
         >
           View Menu
         </Link>
-      </div>
-      <div className="justify-self-center">
-        <Image
-          src="/hero-special.jpg"
-          alt="Today’s special"
-          width={420}
-          height={280}
-          className="rounded"
-        />
+        <button onClick={openLogin} className="px-3 py-1 border rounded w-full">
+          Log in
+        </button>
       </div>
     </section>
   );

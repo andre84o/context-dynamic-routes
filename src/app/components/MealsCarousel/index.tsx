@@ -55,7 +55,7 @@ export default function MealsCarousel({ category }: { category: string }) {
                   id={m.idMeal}
                   className="absolute left-2 top-2"
                 />
-                <Image
+                <img
                   src={m.strMealThumb}
                   alt={m.strMeal}
                   width={200}

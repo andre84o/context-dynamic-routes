@@ -67,7 +67,7 @@ const LoginForm = () => {
             className="bg-blue-600 text-white p-3 rounded-lg w-1/2 mt-15 self-center
                        transition-transform duration-100
                        active:scale-95 active:translate-y-[1px] active:bg-blue-700
-                       focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
+                       focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60 cursor-pointer"
           >
             Login
           </button>

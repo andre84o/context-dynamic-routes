@@ -1,3 +1,4 @@
+// Fil: src/utils/types.ts
 import { Dispatch, SetStateAction } from "react";
 
 export interface UserType {
@@ -9,12 +10,31 @@ export interface UserType {
 export interface UserContextType {
   user: UserType | null;
   setUser: Dispatch<SetStateAction<UserType | null>>;
+  getMealsByCategory: (category: string) => Promise<Meal[]>;
+  getMealById: (id: string) => Promise<Meal | null>;
+  showLogin: boolean;
+  openLogin: () => void;
+  closeLogin: () => void;
+  getCategories: () => Promise<Category[]>;
 }
-
 
 export type Category = {
   idCategory: string;
   strCategory: string;
   strCategoryThumb: string;
   strCategoryDescription: string;
+};
+
+export type Meal = {
+  idMeal: string;
+  strMeal: string;
+  strMealThumb: string;
+};
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  favouriteCategory?: string;
+  favouriteRecipes: string[];
 };
