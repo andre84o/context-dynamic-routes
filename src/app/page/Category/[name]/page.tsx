@@ -1,31 +1,47 @@
-// Fil: src/app/category/[name]/page.tsx
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import { UseUserContext } from "@/utils/context";
+import type { UserContextType, Meal } from "@/utils/types";
 
-/* Svenska: Hämtar alla rätter för en kategori och visar grid */
-async function getMealsByCategory(name: string) {
-  const res = await fetch(
-    `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(
-      name
-    )}`,
-    { cache: "no-store" }
-  );
-  if (!res.ok) throw new Error("Failed to load category");
-  const data = await res.json();
-  return (data?.meals ?? []) as {
-    idMeal: string;
-    strMeal: string;
-    strMealThumb: string;
-  }[];
-}
+export default function CategoryPage() {
+  // Svenska: läs kategorinamnet från URL
+  const { name } = useParams<{ name: string }>();
+  // Svenska: hämta API + user + login-modal från context
+  const { user, getMealsByCategory, openLogin } =
+    UseUserContext() as UserContextType;
+  const router = useRouter();
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: Promise<{ name: string }>;
-}) {
-  const { name } = await params;
-  const meals = await getMealsByCategory(name);
+  const [meals, setMeals] = useState<Meal[]>([]);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    const load = async () => {
+      try {
+        const list = await getMealsByCategory(String(name));
+        if (alive) {
+          setMeals(list);
+          setErr(null);
+        }
+      } catch (e: any) {
+        if (alive) setErr(e?.message ?? "Error");
+      }
+    };
+    load();
+    return () => {
+      alive = false;
+    };
+  }, [name, getMealsByCategory]);
+
+  const handleView = (id: string) => {
+    if (user) router.push(`/meal/${id}`);
+    else openLogin();
+  };
+
+  if (err) return <main className="p-6">Error: {err}</main>;
 
   return (
     <main className="p-6 max-w-5xl mx-auto">
@@ -36,24 +52,25 @@ export default async function CategoryPage({
             key={m.idMeal}
             className="border rounded p-4 w-64 flex flex-col items-center"
           >
-            <Link href={`/meal/${m.idMeal}`}>
-              <img
+     
+            <button onClick={() => handleView(m.idMeal)} className="w-full">
+              <Image
                 src={m.strMealThumb}
                 alt={m.strMeal}
                 width={200}
                 height={200}
                 className="rounded"
               />
-            </Link>
+            </button>
             <h3 className="text-lg font-medium mt-2 text-center">
               {m.strMeal}
             </h3>
-            <Link
-              href={`/meal/${m.idMeal}`}
+            <button
+              onClick={() => handleView(m.idMeal)}
               className="mt-auto px-3 py-1 border rounded"
             >
               View
-            </Link>
+            </button>
           </li>
         ))}
       </ul>
