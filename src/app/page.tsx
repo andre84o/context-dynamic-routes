@@ -78,7 +78,7 @@ export default function HomePage() {
                         {/* Svenska: Två lika stora knappar; Log in öppnar popup */}
                         <div className="flex mt-auto gap-2 w-full">
                           <Link
-                            href={`/meal/${meal.idMeal}`}
+                            href={`/page/meal/${meal.idMeal}`}
                             className="px-3 py-1 btn-action border rounded w-full text-center cursor-pointer"
                           >
                             View Menu

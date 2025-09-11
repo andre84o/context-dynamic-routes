@@ -59,7 +59,7 @@ export default function ProfilePage() {
                       className="border rounded p-2 flex flex-col items-center"
                     >
                       {/* Svenska: Bilden länkar till måltidens sida */}
-                      <Link href={`/meal/${meal.idMeal}`}>
+                      <Link href={`/page/meal/${meal.idMeal}`}>
                         <Image
                           src={meal.strMealThumb}
                           alt={meal.strMeal}
@@ -70,7 +70,7 @@ export default function ProfilePage() {
                       </Link>
                       <p className="mt-2 text-center text-sm">{meal.strMeal}</p>
                       <Link
-                        href={`/meal/${meal.idMeal}`}
+                        href={`/page/meal/${meal.idMeal}`}
                         className="mt-auto px-3 py-1 border rounded btn-action cursor-pointer"
                       >
                         View
