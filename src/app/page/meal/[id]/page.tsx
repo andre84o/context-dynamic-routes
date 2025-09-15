@@ -38,7 +38,7 @@ export default function MealPage() {
     for (let i = 1; i <= 20; i++) {
       const ing = (meal && (meal as Meal)[`strIngredient${i}` as keyof Meal]) as string | undefined;
       const mea = (meal && (meal as Meal)[`strMeasure${i}` as keyof Meal]) as string | undefined;
-      if (ing && ing.trim()) out.push(mea ? `${ing}  ${mea}` : ing);
+      if (ing && ing.trim()) out.push(mea ? `${ing} — ${mea}` : ing);
     }
     return out;
   }, [meal]);

@@ -22,9 +22,10 @@ export default function Home() {
           setCategories(list);
           setError(null);
         }
-      } catch (e: any) {
+      } catch (e) {
         if (alive) {
-          setError(e?.message ?? "Error");
+          const message = e instanceof Error ? e.message : "Error";
+          setError(message);
           setCategories([]);
         }
       }

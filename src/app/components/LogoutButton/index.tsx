@@ -1,6 +1,4 @@
-// Fil: src/components/LogoutButton/index.tsx
 "use client";
-
 import { useRouter } from "next/navigation";
 import { UseUserContext } from "@/utils/context";
 import { UserContextType } from "@/utils/types";

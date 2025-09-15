@@ -45,19 +45,6 @@ export const UserContextProvider = ({
     }
   }, [guestFavorites]);
 
-  React.useEffect(() => {
-    if (!user) return;
-    closeLogin();
-    if (guestFavorites.length) {
-      setUser((prev) => {
-        if (!prev) return prev;
-        const merged = Array.from(new Set([...(prev.favouriteRecipes ?? []), ...guestFavorites]));
-        return { ...prev, favouriteRecipes: merged };
-      });
-      setGuestFavorites([]);
-    }
-  }, [user]);
-
   const openLogin = () => {
     setShowLogin(true);
     const params = new URLSearchParams(sp.toString());
@@ -71,6 +58,19 @@ export const UserContextProvider = ({
     params.delete("login");
     router.replace(`${pathname}${params.size ? `?${params}` : ""}`, { scroll: false });
   };
+
+  React.useEffect(() => {
+    if (!user) return;
+    closeLogin();
+    if (guestFavorites.length) {
+      setUser((prev) => {
+        if (!prev) return prev;
+        const merged = Array.from(new Set([...(prev.favouriteRecipes ?? []), ...guestFavorites]));
+        return { ...prev, favouriteRecipes: merged };
+      });
+      setGuestFavorites([]);
+    }
+  }, [user, closeLogin, guestFavorites]);
 
   const addGuestFavorite = (id: string) => {
     if (user) return;
