@@ -1,4 +1,3 @@
-// Fil: src/app/page/profile/page.tsx
 "use client";
 
 import { UseUserContext } from "@/utils/context";
@@ -58,7 +57,6 @@ export default function ProfilePage() {
                       key={meal.idMeal}
                       className="border rounded p-2 flex flex-col items-center"
                     >
-                      {/* Svenska: Bilden länkar till måltidens sida */}
                       <Link href={`/page/meal/${meal.idMeal}`}>
                         <Image
                           src={meal.strMealThumb}

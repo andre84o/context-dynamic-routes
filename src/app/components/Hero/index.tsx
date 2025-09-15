@@ -5,7 +5,7 @@ import { UseUserContext } from "@/utils/context";
 
 
 export default function Hero() {
-  const { openLogin } = UseUserContext(); // Svenska: Öppnar global modal via context
+  const { openLogin } = UseUserContext();
   return (
     <section className="w-full max-w-5xl mx-auto grid md:grid-cols-2 gap-6 items-center p-6">
       <div className="mt-auto grid grid-cols-2 gap-2 w-full">

@@ -1,4 +1,3 @@
-// Fil: src/components/FavoritesSection/index.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,15 +8,12 @@ import { UseUserContext } from "@/utils/context";
 
 export default function FavoritesSection({
   ids,
-  showAll = false, // Svenska: true = visa alla, false = visa sista tre
+  showAll = false,
 }: {
   ids: string[];
   showAll?: boolean;
 }) {
   const { getMealById, user, guestFavorites } = UseUserContext() as any;
-
-  // Svenska: bestäm vilka ID som ska hämtas
-  // Om utloggad, visa guestFavorites istället
   const idsToLoad = (user ? (showAll ? ids : ids.slice(-3)) : guestFavorites.slice(-3)).reverse();
 
   const [meals, setMeals] = useState<Meal[]>([]);

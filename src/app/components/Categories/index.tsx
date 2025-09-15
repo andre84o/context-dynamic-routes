@@ -37,32 +37,23 @@ export default function Home() {
         <h1 className="text-2xl font-semibold mb-4">Meal Categories</h1>
         {error && <p>Error: {error}</p>}
 
-        <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 justify-items-center">
+        <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {categories.map((c) => (
             <li
               key={c.idCategory}
-              className="border rounded p-4 w-64 flex flex-col"
+              className="border border-gray-200 rounded-xl p-3 flex flex-col bg-white/40 shadow-sm hover:shadow-md transition w-full max-w-72"
             >
-              <div className="relative">
-                <FavoriteButton
-                  id={String(c.idCategory)}
-                  className="absolute left-1 top-2 -translate-x-5 -translate-y-5"
-                />
-                <Image
-                  src={c.strCategoryThumb}
-                  alt={c.strCategory}
-                  width={200}
-                  height={140}
-                />
-              </div>
-
-              <h2 className="text-lg font-medium mt-2">{c.strCategory}</h2>
-              <p className="text-sm mt-1">
-                {c.strCategoryDescription.slice(0, 100)}...
-              </p>
-              <button className="btn-action mt-auto px-3 py-1 border rounded cursor-pointer">
-                View
-              </button>
+              <a href={`/page/Category/${c.strCategory}`} className="group relative flex flex-col h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-black/40 rounded-md">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md border border-black/5 bg-black/5">
+                  <Image src={c.strCategoryThumb} alt={c.strCategory} fill sizes="256px" className="object-cover" />
+                  <span className="absolute left-4 top-4 z-20">
+                    <FavoriteButton id={String(c.idCategory)} className="" />
+                  </span>
+                </div>
+                <h2 className="mt-3 text-sm font-semibold leading-tight line-clamp-2">{c.strCategory}</h2>
+                <p className="mt-1 text-xs text-gray-700 line-clamp-3">{c.strCategoryDescription}</p>
+                <span className="mt-auto pt-3 text-xs text-blue-600 group-hover:underline">View meals</span>
+              </a>
             </li>
           ))}
         </ul>

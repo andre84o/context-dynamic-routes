@@ -5,7 +5,6 @@ import { CiUser } from "react-icons/ci";
 import Link from "next/link";
 import LogoutButton from "@/components/LogoutButton";
 
-// Svensk kommentar: Enkel dropdown som öppnas av user-ikon
 export default function UserMenuButton() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -44,7 +43,6 @@ export default function UserMenuButton() {
           role="menu"
           className="absolute right-0 mt-2 w-40 bg-white text-black border rounded shadow z-50 p-1"
         >
-          {/* Svensk kommentar: Länkar i menyn */}
           <Link
             href="/page/profile"
             className="block px-3 py-2 rounded hover:bg-gray-100"

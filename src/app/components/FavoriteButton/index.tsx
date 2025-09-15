@@ -1,4 +1,3 @@
-// Fil: src/components/FavoriteButton/index.tsx
 "use client";
 
 import { UseUserContext } from "@/utils/context";
@@ -16,7 +15,6 @@ export default function FavoriteButton({
 }) {
   const { user, setUser, openLogin, guestFavorites, addGuestFavorite, removeGuestFavorite } = UseUserContext() as UserContextType;
 
-  // Favorit om inloggad eller om id finns i guestFavorites
   const isFav = useMemo(
     () => (user?.favouriteRecipes?.includes(id) || guestFavorites.includes(id)),
     [user, guestFavorites, id]
@@ -26,7 +24,6 @@ export default function FavoriteButton({
     e?.stopPropagation();
 
     if (!user) {
-      // Spara till guestFavorites i localStorage
       if (guestFavorites.includes(id)) {
         removeGuestFavorite(id);
       } else {

@@ -12,7 +12,6 @@ const Header = () => {
 
   return (
     <header className="relative w-full h-20 bg-black text-white grid grid-cols-3 items-center px-4">
-      {/* Svensk kommentar: Vänster sida: logga + ev. välkomsttext */}
       <div className="justify-self-start flex items-center gap-3">
         <Link href="/">
           <Image
@@ -25,11 +24,7 @@ const Header = () => {
         </Link>
         {user && <p className="text-sm">Welcome, {user.name}</p>}
       </div>
-
-      {/* Mitten: titel */}
       <h1 className="justify-self-center text-xl font-semibold">Recipes</h1>
-
-      {/* Höger: alltid Navigation */}
       <div className="justify-self-end w-80">
         <Navigation />
       </div>

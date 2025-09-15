@@ -1,4 +1,3 @@
-// Fil: src/utils/context.tsx
 "use client";
 
 import { createContext, useContext, useRef, useState, useCallback } from "react";
@@ -17,18 +16,15 @@ export const UserContextProvider = ({
   const [showLogin, setShowLogin] = useState(false);
   const [guestFavorites, setGuestFavorites] = useState<string[]>([]);
 
-  // Synka modal med ?login=1 i URL och stäng vid inloggning
   const sp = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
-  // Öppna modal om ?login=1 och ingen user
   React.useEffect(() => {
     const shouldOpen = !user && sp.get("login") === "1";
     setShowLogin(shouldOpen);
   }, [sp, user]);
 
-  // Ladda guestFavorites från localStorage på mount
   React.useEffect(() => {
     try {
       const raw = localStorage.getItem("guestFavorites");
@@ -39,24 +35,19 @@ export const UserContextProvider = ({
         }
       }
     } catch {
-      // ignore parse errors
     }
   }, []);
 
-  // Spara guestFavorites vid förändring
   React.useEffect(() => {
     try {
       localStorage.setItem("guestFavorites", JSON.stringify(guestFavorites));
     } catch {
-      // ignore quota errors
     }
   }, [guestFavorites]);
 
-  // Vid inloggning: slå ihop guestFavorites med user.favouriteRecipes och rensa guestFavorites
   React.useEffect(() => {
     if (!user) return;
     closeLogin();
-    // Slå ihop guestFavorites med user.favouriteRecipes om det finns något
     if (guestFavorites.length) {
       setUser((prev) => {
         if (!prev) return prev;
@@ -65,7 +56,6 @@ export const UserContextProvider = ({
       });
       setGuestFavorites([]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const openLogin = () => {
@@ -82,7 +72,6 @@ export const UserContextProvider = ({
     router.replace(`${pathname}${params.size ? `?${params}` : ""}`, { scroll: false });
   };
 
-  // Guest favorites helpers (ignoreras om user är inloggad – då hanteras favorites separat senare)
   const addGuestFavorite = (id: string) => {
     if (user) return;
     setGuestFavorites((prev) => (prev.includes(id) ? prev : [...prev, id]));
@@ -93,10 +82,8 @@ export const UserContextProvider = ({
     setGuestFavorites((prev) => prev.filter((x) => x !== id));
   };
 
-  // Svensk kommentar: Enkla in-memory caches så vi slipper hämta samma sak flera gånger
   const catCache = useRef(new Map<string, Meal[]>());
   const mealCache = useRef(new Map<string, Meal>());
-  // Enkel cache av kategorier i minnet
   const categoriesCache = useRef<Category[] | null>(null);
 
   const getCategories = useCallback(async (): Promise<Category[]> => {
@@ -108,8 +95,6 @@ export const UserContextProvider = ({
     categoriesCache.current = list;
     return list;
   }, []);
-
-  // Svensk kommentar: Hämta alla meals i en kategori (ThemealDB filter.php?c=)
   const getMealsByCategory = async (category: string): Promise<Meal[]> => {
     const key = category.toLowerCase();
     const hit = catCache.current.get(key);
@@ -127,8 +112,6 @@ export const UserContextProvider = ({
     catCache.current.set(key, list);
     return list;
   };
-
-  // Svenska: Hämtar en måltid via ID och cachear i minnet
   const getMealById = useCallback(async (id: string): Promise<Meal | null> => {
     const key = String(id);
     const hit = mealCache.current.get(key);

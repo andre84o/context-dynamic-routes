@@ -1,4 +1,3 @@
-// Fil: src/components/LoginButton/index.tsx
 "use client";
 
 import { useEffect, useState, MouseEvent } from "react";

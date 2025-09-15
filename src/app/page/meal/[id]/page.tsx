@@ -1,4 +1,3 @@
-// Fil: src/app/meal/[id]/page.tsx
 "use client";
 
 import { useEffect, useMemo, useState } from "react";

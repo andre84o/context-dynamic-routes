@@ -1,4 +1,3 @@
-// Fil: src/app/page/page.tsx
 "use client";
 
 import Image from "next/image";
@@ -15,7 +14,7 @@ export default function HomePage() {
   const { user, getMealsByCategory, openLogin, showLogin, closeLogin } =
     UseUserContext() as UserContextType;
 
-  const picks = ["Beef", "Vegetarian", "Chicken"]; // chosen categories
+  const picks = ["Beef", "Vegetarian", "Chicken"];
   const [featured, setFeatured] = useState<
     { cat: string; meal: Meal | null }[]
   >(picks.map((cat) => ({ cat, meal: null })));
@@ -24,7 +23,7 @@ export default function HomePage() {
   const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
-    if (user) return; // Svenska: hoppa över om inloggad
+    if (user) return;
     let active = true;
     (async () => {
       try {
@@ -53,19 +52,16 @@ export default function HomePage() {
   }, [user, getMealsByCategory, retryKey]);
 
   return (
-    // Svenska: relativ wrapper som tar plats i layouten
+
     <main className="relative min-h-[calc(100dvh-48px)] overflow-x-clip">
-      {/* Svenska: dekorativ bakgrund, absolut och bakom allt */}
       <Image
         src="/foodie-1-bg.png"
-        alt="" // dekorativ
+        alt="Background foodie"
         fill
         sizes="100vw"
         className="absolute inset-0 -z-10 object-cover translate-y-6 scale-105 blur-sm opacity-60"
         priority
       />
-
-      {/* Svenska: innehåll som nu påverkar sidans höjd så att footer hamnar efter */}
       <div className="font-sans flex flex-col items-center justify-center text-black min-h-[calc(100dvh-48px)] bg-white/0 relative z-10">
         <section className="p-6 w-full max-w-5xl flex flex-col gap-8">
           {!user ? (

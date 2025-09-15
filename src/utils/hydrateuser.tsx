@@ -1,4 +1,3 @@
-// Fil: src/utils/hydrateuser.tsx
 "use client";
 import { useEffect } from "react";
 import { UseUserContext } from "@/utils/context";
