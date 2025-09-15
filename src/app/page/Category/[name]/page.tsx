@@ -18,10 +18,11 @@ export default function CategoryPage() {
     let alive = true;
     (async () => {
       try {
-        const [mealsList, categories] = await Promise.all([
+        const [mealsList, categoriesRaw] = await Promise.all([
           getMealsByCategory(String(name)),
           getCategories(),
         ]);
+        const categories: Category[] = categoriesRaw as Category[];
         if (!alive) return;
         setMeals(mealsList);
   const found = categories.find((c: Category) => c.strCategory.toLowerCase() === String(name).toLowerCase());

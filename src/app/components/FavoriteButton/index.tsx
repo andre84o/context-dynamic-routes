@@ -13,7 +13,7 @@ export default function FavoriteButton({
   id: string;
   className?: string;
 }) {
-  const { user, setUser, openLogin, guestFavorites, addGuestFavorite, removeGuestFavorite } = UseUserContext() as UserContextType;
+  const { user, setUser, guestFavorites, addGuestFavorite, removeGuestFavorite } = UseUserContext() as UserContextType;
 
   const isFav = useMemo(
     () => (user?.favouriteRecipes?.includes(id) || guestFavorites.includes(id)),
@@ -33,7 +33,11 @@ export default function FavoriteButton({
     }
 
     const list = new Set(user.favouriteRecipes ?? []);
-    isFav ? list.delete(id) : list.add(id);
+    if (isFav) {
+      list.delete(id);
+    } else {
+      list.add(id);
+    }
     const updated = { ...user, favouriteRecipes: Array.from(list) };
     setUser(updated);
     try {

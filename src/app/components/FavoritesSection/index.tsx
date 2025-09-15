@@ -13,13 +13,14 @@ export default function FavoritesSection({
   ids: string[];
   showAll?: boolean;
 }) {
-  const { getMealById, user, guestFavorites } = UseUserContext() as any;
+  const { getMealById, user, guestFavorites } = UseUserContext();
   const idsToLoad = (user ? (showAll ? ids : ids.slice(-3)) : guestFavorites.slice(-3)).reverse();
 
   const [meals, setMeals] = useState<Meal[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const idsKey = idsToLoad.join(",");
   useEffect(() => {
     if (!idsToLoad.length) {
       setMeals([]);
@@ -51,7 +52,7 @@ export default function FavoritesSection({
     return () => {
       active = false;
     };
-  }, [idsToLoad.join(","), getMealById]);
+  }, [idsKey, getMealById]);
 
   return (
     <section>
