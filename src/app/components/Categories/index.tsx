@@ -24,8 +24,12 @@ export default function Home() {
         if (!res.ok) throw new Error("Failed to load categories");
         const data: { categories?: Category[] } = await res.json();
         setCategories(data.categories ?? []);
-      } catch (e: any) {
-        setError(e.message ?? "Error");
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setError(e.message ?? "Error");
+        } else {
+          setError("Unknown error");
+        }
       }
     };
     run();

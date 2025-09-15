@@ -41,7 +41,6 @@ export default function ItemPage() {
   if (err) return <main className="p-6">Error: {err}</main>;
   if (!meal) return <main className="p-6">Loading...</main>;
 
-  // Parse ingredients and measures
   const ingredients = [];
   for (let i = 1; i <= 20; i++) {
     const ing = meal[`strIngredient${i}` as keyof Meal];
