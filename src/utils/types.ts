@@ -1,4 +1,3 @@
-// Fil: src/utils/types.ts
 import { Dispatch, SetStateAction } from "react";
 
 export interface UserType {
@@ -35,6 +34,7 @@ export type Meal = {
   strCategory?: string;
   strArea?: string;
   strInstructions?: string;
+  strYoutube?: string;
 };
 
 export type User = {

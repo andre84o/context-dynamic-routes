@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function ItemPage() {
   const { id } = useParams<{ id: string }>();
-  const { getMealById, getMealsByCategory, openLogin, user } = UseUserContext() as UserContextType;
+  const { getMealById, getMealsByCategory } = UseUserContext() as UserContextType;
   const [meal, setMeal] = useState<Meal | null>(null);
   const [moreMeals, setMoreMeals] = useState<Meal[]>([]);
   const [err, setErr] = useState<string | null>(null);

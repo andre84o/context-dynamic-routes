@@ -10,9 +10,7 @@ export default function MealPage() {
   const { id } = useParams<{ id: string }>();
   const { getMealById } = UseUserContext() as UserContextType;
 
-  const [meal, setMeal] = useState<Meal | (Meal & Record<string, any>) | null>(
-    null
-  );
+  const [meal, setMeal] = useState<Meal | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,9 +36,9 @@ export default function MealPage() {
     if (!meal) return [];
     const out: string[] = [];
     for (let i = 1; i <= 20; i++) {
-      const ing = (meal as any)[`strIngredient${i}`];
-      const mea = (meal as any)[`strMeasure${i}`];
-      if (ing && String(ing).trim()) out.push(mea ? `${ing} — ${mea}` : ing);
+      const ing = (meal && (meal as Meal)[`strIngredient${i}` as keyof Meal]) as string | undefined;
+      const mea = (meal && (meal as Meal)[`strMeasure${i}` as keyof Meal]) as string | undefined;
+      if (ing && ing.trim()) out.push(mea ? `${ing}  ${mea}` : ing);
     }
     return out;
   }, [meal]);
@@ -63,10 +61,10 @@ export default function MealPage() {
         <div className="flex-1">
           <p className="text-sm">
             <span className="font-medium">Category:</span>{" "}
-            {(meal as any).strCategory}
+            {meal.strCategory}
           </p>
           <p className="text-sm">
-            <span className="font-medium">Area:</span> {(meal as any).strArea}
+            <span className="font-medium">Area:</span> {meal.strArea}
           </p>
 
           <h2 className="text-lg font-medium mt-4">Ingredients</h2>
@@ -80,12 +78,12 @@ export default function MealPage() {
 
       <h2 className="text-lg font-medium mt-6">Instructions</h2>
       <p className="whitespace-pre-line text-sm">
-        {(meal as any).strInstructions}
+  {meal.strInstructions}
       </p>
 
-      {(meal as any).strYoutube ? (
+      {meal.strYoutube ? (
         <a
-          href={(meal as any).strYoutube}
+          href={meal.strYoutube}
           target="_blank"
           rel="noreferrer"
           className="inline-block mt-4 px-3 py-1 border rounded"
