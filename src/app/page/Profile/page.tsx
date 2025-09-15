@@ -10,17 +10,17 @@ export default function ProfilePage() {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [err, setErr] = useState<string | null>(null);
 
+  const favouriteRecipesKey = user?.favouriteRecipes?.join(",") || "";
   useEffect(() => {
     const load = async () => {
-      if (!user?.favouriteRecipes?.length) {
+      if (!favouriteRecipesKey) {
         setMeals([]);
         setErr(null);
         return;
       }
       try {
-        const results = await Promise.all(
-          user.favouriteRecipes.map((id) => getMealById(String(id)))
-        );
+        const ids = favouriteRecipesKey.split(",").filter(Boolean);
+        const results = await Promise.all(ids.map((id) => getMealById(String(id))));
         setMeals(results.filter(Boolean) as Meal[]);
         setErr(null);
       } catch {
@@ -29,7 +29,7 @@ export default function ProfilePage() {
       }
     };
     load();
-  }, [user?.favouriteRecipes?.join(","), getMealById]);
+  }, [favouriteRecipesKey, getMealById]);
 
   return (
     <main className="min-h-screen w-full flex items-center justify-center">
