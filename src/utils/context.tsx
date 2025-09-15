@@ -15,6 +15,7 @@ export const UserContextProvider = ({
 }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const [showLogin, setShowLogin] = useState(false);
+  const [guestFavorites, setGuestFavorites] = useState<string[]>([]);
 
   // Synka modal med ?login=1 i URL och stäng vid inloggning
   const sp = useSearchParams();
@@ -27,10 +28,43 @@ export const UserContextProvider = ({
     setShowLogin(shouldOpen);
   }, [sp, user]);
 
-  // Stäng modal och rensa ?login vid inloggning
+  // Ladda guestFavorites från localStorage på mount
+  React.useEffect(() => {
+    try {
+      const raw = localStorage.getItem("guestFavorites");
+      if (raw) {
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) {
+          setGuestFavorites(arr.filter((x) => typeof x === "string"));
+        }
+      }
+    } catch {
+      // ignore parse errors
+    }
+  }, []);
+
+  // Spara guestFavorites vid förändring
+  React.useEffect(() => {
+    try {
+      localStorage.setItem("guestFavorites", JSON.stringify(guestFavorites));
+    } catch {
+      // ignore quota errors
+    }
+  }, [guestFavorites]);
+
+  // Vid inloggning: slå ihop guestFavorites med user.favouriteRecipes och rensa guestFavorites
   React.useEffect(() => {
     if (!user) return;
     closeLogin();
+    // Slå ihop guestFavorites med user.favouriteRecipes om det finns något
+    if (guestFavorites.length) {
+      setUser((prev) => {
+        if (!prev) return prev;
+        const merged = Array.from(new Set([...(prev.favouriteRecipes ?? []), ...guestFavorites]));
+        return { ...prev, favouriteRecipes: merged };
+      });
+      setGuestFavorites([]);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -46,6 +80,17 @@ export const UserContextProvider = ({
     const params = new URLSearchParams(sp.toString());
     params.delete("login");
     router.replace(`${pathname}${params.size ? `?${params}` : ""}`, { scroll: false });
+  };
+
+  // Guest favorites helpers (ignoreras om user är inloggad – då hanteras favorites separat senare)
+  const addGuestFavorite = (id: string) => {
+    if (user) return;
+    setGuestFavorites((prev) => (prev.includes(id) ? prev : [...prev, id]));
+  };
+
+  const removeGuestFavorite = (id: string) => {
+    if (user) return;
+    setGuestFavorites((prev) => prev.filter((x) => x !== id));
   };
 
   // Svensk kommentar: Enkla in-memory caches så vi slipper hämta samma sak flera gånger
@@ -101,7 +146,19 @@ export const UserContextProvider = ({
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, getMealsByCategory, getMealById, showLogin, openLogin, closeLogin, getCategories }}
+      value={{
+        user,
+        setUser,
+        getMealsByCategory,
+        getMealById,
+        showLogin,
+        openLogin,
+        closeLogin,
+        getCategories,
+        guestFavorites,
+        addGuestFavorite,
+        removeGuestFavorite,
+      }}
     >
       {children}
     </UserContext.Provider>

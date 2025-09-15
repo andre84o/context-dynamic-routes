@@ -43,29 +43,30 @@ export default function MealsCarousel({ category }: { category: string }) {
         </span>
       </div>
       <div className="w-full overflow-x-auto">
-        <ul className="flex gap-4 min-w-max">
+        <ul className="flex gap-6 min-w-max">
           {meals.map((m) => (
             <li
               key={m.idMeal}
-              className="border rounded p-2 w-56 flex-shrink-0 flex flex-col items-center"
+              className="border border-gray-200 rounded-xl p-3 flex-shrink-0 flex flex-col bg-white/40 shadow-sm hover:shadow-md transition w-64 max-w-72"
             >
-              {/* Svensk kommentar: Hjärtat kan spara recept-id i favoritlistan */}
-              <div className="relative">
-                <FavoriteButton
-                  id={m.idMeal}
-                  className="absolute left-2 top-2"
-                />
-                <img
-                  src={m.strMealThumb}
-                  alt={m.strMeal}
-                  width={200}
-                  height={140}
-                />
+              <div className="group relative flex flex-col h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-black/40 rounded-md">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md border border-black/5 bg-black/5">
+                  <Image
+                    src={m.strMealThumb}
+                    alt={m.strMeal}
+                    fill
+                    sizes="256px"
+                    className="object-cover"
+                  />
+                  <span className="absolute left-7 top-7 z-20">
+                    <FavoriteButton id={m.idMeal} className="" />
+                  </span>
+                </div>
+                <h3 className="mt-3 text-sm font-semibold leading-tight line-clamp-2">
+                  {m.strMeal}
+                </h3>
+                <span className="mt-auto pt-3 text-xs text-blue-600">View details</span>
               </div>
-              <p className="text-sm mt-2 text-center">{m.strMeal}</p>
-              <button className="mt-auto px-3 py-1 border rounded cursor-pointer btn-action">
-                View
-              </button>
             </li>
           ))}
         </ul>

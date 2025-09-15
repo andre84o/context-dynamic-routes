@@ -8,7 +8,6 @@ export default function HydrateUser() {
   const { user, setUser } = UseUserContext() as UserContextType;
 
   useEffect(() => {
-    // Svensk kommentar: Läs sparad user och se till att favouriteRecipes alltid är en array
     if (!user) {
       const raw = localStorage.getItem("user");
       if (raw) {

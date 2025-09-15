@@ -14,22 +14,27 @@ export default function FavoriteButton({
   id: string;
   className?: string;
 }) {
-  const { user, setUser, openLogin } = UseUserContext() as UserContextType;
+  const { user, setUser, openLogin, guestFavorites, addGuestFavorite, removeGuestFavorite } = UseUserContext() as UserContextType;
 
+  // Favorit om inloggad eller om id finns i guestFavorites
   const isFav = useMemo(
-    () => !!user?.favouriteRecipes?.includes(id),
-    [user, id]
+    () => (user?.favouriteRecipes?.includes(id) || guestFavorites.includes(id)),
+    [user, guestFavorites, id]
   );
 
   const toggle = (e?: React.MouseEvent<HTMLButtonElement>) => {
-    e?.stopPropagation(); // Svenska: stoppa klick från att bubbla upp till ev länk
+    e?.stopPropagation();
 
     if (!user) {
-      openLogin(); // Svenska: inte inloggad öppna popup
+      // Spara till guestFavorites i localStorage
+      if (guestFavorites.includes(id)) {
+        removeGuestFavorite(id);
+      } else {
+        addGuestFavorite(id);
+      }
       return;
     }
 
-    // Svenska: uppdatera favoriter lokalt
     const list = new Set(user.favouriteRecipes ?? []);
     isFav ? list.delete(id) : list.add(id);
     const updated = { ...user, favouriteRecipes: Array.from(list) };
@@ -48,12 +53,12 @@ export default function FavoriteButton({
           ? isFav
             ? "Remove from favorites"
             : "Add to favorites"
-          : "Sign in to save"
+          : "Save as guest"
       }
-      className={`p-1 -translate-y-5 -translate-x-5 btn-action cursor-pointer${className}`}
+      className={`p-1 -translate-y-7 -translate-x-7 btn-action cursor-pointer${className}`}
       type="button"
     >
-      {isFav ? <FaHeart size={22} /> : <CiHeart size={24} />}
+      {isFav ? <FaHeart size={22} color="#E63E33" /> : <CiHeart size={24} />}
     </button>
   );
 }

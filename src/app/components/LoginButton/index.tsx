@@ -19,7 +19,7 @@ export default function LoginButton() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="bg-white btn-action text-black px-3 py-1 rounded border cursor-pointer"
+        className="bg-white btn-action text-black px-3 py-1 rounded border cursor-pointer w-25 h-8"
       >
         Sign in
       </button>

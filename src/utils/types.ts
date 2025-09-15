@@ -16,6 +16,9 @@ export interface UserContextType {
   openLogin: () => void;
   closeLogin: () => void;
   getCategories: () => Promise<Category[]>;
+  guestFavorites: string[];
+  addGuestFavorite: (id: string) => void;
+  removeGuestFavorite: (id: string) => void;
 }
 
 export type Category = {

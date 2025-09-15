@@ -12,100 +12,164 @@ import FavoritesSection from "@/components/FavoritesSection";
 import LoginModal from "@/components/LoginPopupModal";
 
 export default function HomePage() {
-  // Svenska: använd modal-styrning från context
   const { user, getMealsByCategory, openLogin, showLogin, closeLogin } =
     UseUserContext() as UserContextType;
 
-  const picks = ["Beef", "Vegetarian", "Chicken"];
+  const picks = ["Beef", "Vegetarian", "Chicken"]; // chosen categories
   const [featured, setFeatured] = useState<
     { cat: string; meal: Meal | null }[]
   >(picks.map((cat) => ({ cat, meal: null })));
+  const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
-    if (user) return;
-    const run = async () => {
+    if (user) return; // Svenska: hoppa över om inloggad
+    let active = true;
+    (async () => {
       try {
+        setLoading(true);
+        setErr(null);
         const results = await Promise.all(
           picks.map(async (cat) => {
-            const list = await getMealsByCategory(cat); // från context
-            return { cat, meal: list?.[0] ?? null };
+            try {
+              const list = await getMealsByCategory(cat);
+              return { cat, meal: list?.[0] ?? null };
+            } catch {
+              return { cat, meal: null };
+            }
           })
         );
-        setFeatured(results);
+        if (active) setFeatured(results);
       } catch (e: any) {
-        setErr(e.message ?? "Error");
+        if (active) setErr(e?.message || "Failed to load");
+      } finally {
+        if (active) setLoading(false);
       }
+    })();
+    return () => {
+      active = false;
     };
-    run();
-  }, [user, getMealsByCategory]);
+  }, [user, getMealsByCategory, retryKey]);
 
   return (
-    <div className="font-sans flex flex-col items-center justify-center text-black min-h-[calc(100vh-48px)] bg-white">
-      <main className="p-6 w-full max-w-5xl flex flex-col gap-8">
-        {!user ? (
-          <>
-            <Hero />
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">Featured Meals</h2>
-              {err && <p>Error: {err}</p>}
-              <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 justify-items-center">
-                {featured.map(({ cat, meal }) => (
-                  <li
-                    key={cat}
-                    className="border rounded p-4 w-64 flex flex-col items-center"
-                  >
-                    {meal ? (
-                      <>
-                        <button
-                          onClick={openLogin}
-                          className="w-full btn-action cursor-pointer"
+    // Svenska: relativ wrapper som tar plats i layouten
+    <main className="relative min-h-[calc(100dvh-48px)] overflow-x-clip">
+      {/* Svenska: dekorativ bakgrund, absolut och bakom allt */}
+      <Image
+        src="/foodie-1-bg.png"
+        alt="" // dekorativ
+        fill
+        sizes="100vw"
+        className="absolute inset-0 -z-10 object-cover translate-y-6 scale-105 blur-sm opacity-60"
+        priority
+      />
+
+      {/* Svenska: innehåll som nu påverkar sidans höjd så att footer hamnar efter */}
+      <div className="font-sans flex flex-col items-center justify-center text-black min-h-[calc(100dvh-48px)] bg-white/0 relative z-10">
+        <section className="p-6 w-full max-w-5xl flex flex-col gap-8">
+          {!user ? (
+            <>
+              <Hero />
+              <section>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-semibold">Popular this week</h2>
+                  {err && (
+                    <button
+                      onClick={() => setRetryKey((v) => v + 1)}
+                      className="text-xs underline"
+                    >
+                      Retry
+                    </button>
+                  )}
+                </div>
+                {err && <p className="text-sm text-red-600 mb-2">{err}</p>}
+                <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                  {loading
+                    ? picks.map((p) => (
+                        <li
+                          key={p}
+                          className="animate-pulse border rounded-xl p-3 flex flex-col gap-3 bg-white w-full max-w-72"
                         >
-                          <Image
-                            src={meal.strMealThumb}
-                            alt={meal.strMeal}
-                            width={200}
-                            height={200}
-                            className="rounded"
-                          />
-                        </button>
+                          <div className="aspect-[4/3] w-full rounded-md bg-black/10" />
+                          <div className="h-4 bg-black/10 rounded w-3/4" />
+                          <div className="h-3 bg-black/10 rounded w-1/2" />
+                          <div className="mt-auto h-6 bg-black/10 rounded w-full" />
+                        </li>
+                      ))
+                    : featured.map(({ cat, meal }) => {
+                        if (!meal)
+                          return (
+                            <li
+                              key={cat}
+                              className="border rounded-xl p-3 flex flex-col justify-center items-center text-sm bg-white"
+                            >
+                              <p className="text-center opacity-70">
+                                No meal found for {cat}
+                              </p>
+                            </li>
+                          );
 
-                        <h3 className="text-lg btn-action font-medium mt-2 text-center">
-                          {meal.strMeal}
-                        </h3>
-                        <p className="text-sm mt-1">{cat}</p>
+                        const cardInner = (
+                          <div className="group relative flex flex-col h-full">
+                            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md border border-black/5 bg-black/5">
+                              <Image
+                                src={meal.strMealThumb}
+                                alt={meal.strMeal}
+                                fill
+                                sizes="256px"
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                            </div>
+                            <h3 className="mt-3 text-sm font-semibold leading-tight line-clamp-2">
+                              {meal.strMeal}
+                            </h3>
+                            <span className="mt-1 inline-block text-[10px] uppercase tracking-wide px-2 py-1 rounded bg-black text-white w-fit">
+                              {cat}
+                            </span>
+                            <span className="mt-auto pt-3 text-xs text-blue-600 group-hover:underline">
+                              {user ? "View details" : "Login to view"}
+                            </span>
+                          </div>
+                        );
 
-                        {/* Svenska: Två lika stora knappar; Log in öppnar popup */}
-                        <div className="flex mt-auto gap-2 w-full">
-                          <Link
-                            href={`/page/meal/${meal.idMeal}`}
-                            className="px-3 py-1 btn-action border rounded w-full text-center cursor-pointer"
+                        return (
+                          <li
+                            key={cat}
+                            className="border rounded-xl p-3 border-gray-200 flex flex-col bg-white/40 shadow-sm hover:shadow-md transition w-full max-w-72 shadow-sm"
                           >
-                            View Menu
-                          </Link>
-                        </div>
-                      </>
-                    ) : (
-                      <p className="text-sm">No meal found for {cat}</p>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </>
-        ) : (
-          <>
-            {user.favouriteCategory && (
-              <MealsCarousel category={user.favouriteCategory} />
-            )}
-            {/* Svenska: Home ska visa 3 senaste → FavoritesSection utan showAll */}
-            <FavoritesSection ids={user.favouriteRecipes ?? []} />
-          </>
-        )}
-      </main>
-
-      {/* Svenska: Modal styrs av context */}
-      <LoginModal open={showLogin} onClose={closeLogin} />
-    </div>
+                            {user ? (
+                              <Link
+                                href={`/page/meal/${meal.idMeal}`}
+                                className="focus:outline-none focus-visible:ring-2 focus-visible:ring-black/40 rounded-md h-full"
+                              >
+                                {cardInner}
+                              </Link>
+                            ) : (
+                              <button
+                                onClick={openLogin}
+                                className="text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-black/40 rounded-md h-full"
+                              >
+                                {cardInner}
+                              </button>
+                            )}
+                          </li>
+                        );
+                      })}
+                </ul>
+              </section>
+            </>
+          ) : (
+            <>
+              {user.favouriteCategory && (
+                <MealsCarousel category={user.favouriteCategory} />
+              )}
+              <FavoritesSection ids={user.favouriteRecipes ?? []} />
+            </>
+          )}
+        </section>
+        <LoginModal open={showLogin} onClose={closeLogin} />
+      </div>
+    </main>
   );
 }

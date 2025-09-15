@@ -62,9 +62,9 @@ export default function Navigation() {
               <Link
                 href={href}
                 aria-current={isActive ? "page" : undefined}
-                className="btn-action block w-full h-10 rounded -ml-3 border flex items-center justify-center text-center truncate
-                           bg-black text-white border-white
-                           aria-[current=page]:bg-white aria-[current=page]:text-black aria-[current=page]:border-white"
+                className="btn-action block w-full px-2 h-8 rounded border flex items-center justify-center text-sm truncate
+               bg-black text-white border-white
+               aria-[current=page]:bg-white aria-[current=page]:text-black aria-[current=page]:border-white"
               >
                 {label}
               </Link>
