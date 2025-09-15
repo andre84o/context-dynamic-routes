@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { UseUserContext } from "@/utils/context";
 import { UserContextType, Meal } from "@/utils/types";
 import Hero from "@/components/Hero";
@@ -13,10 +14,10 @@ export default function HomePage() {
   const { user, getMealsByCategory, openLogin, showLogin, closeLogin } =
     UseUserContext() as UserContextType;
 
-  const picks = ["Beef", "Vegetarian", "Chicken"];
+  const picks: string[] = useMemo(() => ["Beef", "Vegetarian", "Chicken"], []);
   const [featured, setFeatured] = useState<
     { cat: string; meal: Meal | null }[]
-  >(picks.map((cat) => ({ cat, meal: null })));
+  >(picks.map((cat: string) => ({ cat, meal: null })));
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [retryKey, setRetryKey] = useState(0);
@@ -29,7 +30,7 @@ export default function HomePage() {
         setLoading(true);
         setErr(null);
         const results = await Promise.all(
-          picks.map(async (cat) => {
+          picks.map(async (cat: string) => {
             try {
               const list = await getMealsByCategory(cat);
               return { cat, meal: list?.[0] ?? null };
@@ -84,7 +85,7 @@ export default function HomePage() {
                 {err && <p className="text-sm text-red-600 mb-2">{err}</p>}
                 <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                   {loading
-                    ? picks.map((p) => (
+                    ? picks.map((p: string) => (
                         <li
                           key={p}
                           className="animate-pulse border rounded-xl p-3 flex flex-col gap-3 bg-white w-full max-w-72"

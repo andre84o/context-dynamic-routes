@@ -51,12 +51,12 @@ export const UserContextProvider = ({
     router.replace(`${pathname}?${params}`, { scroll: false });
   };
 
-  const closeLogin = () => {
+  const closeLogin = useCallback(() => {
     setShowLogin(false);
     const params = new URLSearchParams(sp.toString());
     params.delete("login");
     router.replace(`${pathname}${params.size ? `?${params}` : ""}`, { scroll: false });
-  };
+  }, [sp, pathname, router]);
 
   React.useEffect(() => {
     if (!user) return;
