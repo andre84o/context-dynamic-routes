@@ -6,6 +6,7 @@ import { UserContextProvider } from "../utils/context";
 import HydrateUser from "@/utils/hydrateuser";
 import LoginPortal from "./components/LoginPortal";
 import Footer from "./components/Footer";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,15 +34,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <UserContextProvider>
-          <HydrateUser />
-          <Header />
-          <main className="flex-1 flex flex-col">
-            {children}
-          </main>
-          <Footer />
-          <LoginPortal />
-        </UserContextProvider>
+        <Suspense fallback={null}>
+          <UserContextProvider>
+            <HydrateUser />
+            <Header />
+            <main className="flex-1 flex flex-col">{children}</main>
+            <Footer />
+            <LoginPortal />
+          </UserContextProvider>
+        </Suspense>
       </body>
     </html>
   );
