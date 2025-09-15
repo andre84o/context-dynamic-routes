@@ -4,12 +4,12 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { UseUserContext } from "@/utils/context";
-import type { UserContextType, Meal, Category } from "@/utils/types";
+import type { Meal, Category } from "@/utils/types";
 
 export default function CategoryPage() {
   // Svenska: läs kategorinamnet från URL
   const { name } = useParams<{ name: string }>();
-  const { user, setUser, getMealsByCategory, getCategories } = UseUserContext() as UserContextType;
+  const { user, setUser, getMealsByCategory, getCategories } = UseUserContext();
   const [meals, setMeals] = useState<Meal[]>([]);
   const [cat, setCat] = useState<Category | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -24,12 +24,13 @@ export default function CategoryPage() {
         ]);
         if (!alive) return;
         setMeals(mealsList);
-        const found = categories.find(c => c.strCategory.toLowerCase() === String(name).toLowerCase());
+  const found = categories.find((c: Category) => c.strCategory.toLowerCase() === String(name).toLowerCase());
         setCat(found ?? null);
         setErr(null);
-      } catch (e: any) {
+      } catch (e) {
         if (alive) {
-          setErr(e?.message ?? "Error");
+          const message = e instanceof Error ? e.message : "Error";
+          setErr(message);
           setMeals([]);
         }
       }
