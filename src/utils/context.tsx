@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { createContext, useContext, useRef, useState, useCallback } from "react";
 import React from "react";
 import type { UserContextType, UserType, Meal, Category } from "./types";

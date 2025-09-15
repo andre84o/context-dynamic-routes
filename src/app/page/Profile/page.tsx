@@ -1,5 +1,4 @@
 "use client";
-
 import { UseUserContext } from "@/utils/context";
 import type { UserContextType, Meal } from "@/utils/types";
 import { useEffect, useState } from "react";
