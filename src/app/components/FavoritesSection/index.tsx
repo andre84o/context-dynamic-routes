@@ -100,7 +100,7 @@ export default function FavoritesSection({
                 className="border border-gray-200 rounded-xl p-3 flex flex-col bg-white/40 shadow-sm hover:shadow-md transition w-full max-w-72"
               >
                 <Link
-                  href={`/page/meal/${meal.idMeal}`}
+                  href={`/page/item/${meal.idMeal}`}
                   className="focus:outline-none focus-visible:ring-2 focus-visible:ring-black/40 rounded-md h-full"
                 >
                   {card}

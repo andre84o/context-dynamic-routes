@@ -50,7 +50,7 @@ export default function UserMenuButton() {
             Profile
           </Link>
           <Link
-            href="/page/category"
+            href="/page/Category"
             className="block px-3 py-2 rounded hover:bg-gray-100"
             role="menuitem"
           >

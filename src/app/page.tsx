@@ -139,7 +139,7 @@ export default function HomePage() {
                           >
                             {user ? (
                               <Link
-                                href={`/page/meal/${meal.idMeal}`}
+                                href={`/page/item/${meal.idMeal}`}
                                 className="focus:outline-none focus-visible:ring-2 focus-visible:ring-black/40 rounded-md h-full"
                               >
                                 {cardInner}

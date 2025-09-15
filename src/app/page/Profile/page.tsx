@@ -56,7 +56,7 @@ export default function ProfilePage() {
                       key={meal.idMeal}
                       className="border rounded p-2 flex flex-col items-center"
                     >
-                      <Link href={`/page/meal/${meal.idMeal}`}>
+                      <Link href={`/page/item/${meal.idMeal}`}>
                         <Image
                           src={meal.strMealThumb}
                           alt={meal.strMeal}
@@ -67,7 +67,7 @@ export default function ProfilePage() {
                       </Link>
                       <p className="mt-2 text-center text-sm">{meal.strMeal}</p>
                       <Link
-                        href={`/page/meal/${meal.idMeal}`}
+                        href={`/page/item/${meal.idMeal}`}
                         className="mt-auto px-3 py-1 border rounded btn-action cursor-pointer"
                       >
                         View
