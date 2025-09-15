@@ -1,10 +1,10 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import NotFoundClient from "./NotFoundClient";
 
 export default function NotFoundPage() {
-  const searchParams = useSearchParams();
-  const code = searchParams.get("code");
-
-  return <div>404 – Sidan kunde inte hittas {code && `(kod: ${code})`}</div>;
+  return (
+    <Suspense fallback={<div>Laddar 404...</div>}>
+      <NotFoundClient />
+    </Suspense>
+  );
 }
