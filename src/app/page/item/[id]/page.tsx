@@ -27,9 +27,10 @@ export default function ItemPage() {
           const more = await getMealsByCategory(m.strCategory);
           if (alive) setMoreMeals(more.filter(me => me.idMeal !== id).slice(0, 5));
         }
-      } catch (e: any) {
+      } catch (e) {
         if (alive) {
-          setErr(e?.message ?? "Error");
+          const message = e instanceof Error ? e.message : "Error";
+          setErr(message);
           setMeal(null);
         }
       }

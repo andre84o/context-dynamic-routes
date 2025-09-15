@@ -1,4 +1,4 @@
-import { UserType, UserContextType } from "@/utils/types";
+import { UserType } from "@/utils/types";
 
 export const UserArray: UserType[] = [
   {

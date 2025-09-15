@@ -27,8 +27,8 @@ const LoginForm = () => {
   };
 
   const handleChange = (event: { target: { value: any } }) => {
-    setUserInput(event.target.value);
-    if (user) console.log("User is" + user?.name);
+  setUserInput(event.target.value);
+  if (user) console.log("User is" + user?.name);
   };
 
   return (
