@@ -40,8 +40,11 @@ export default function HomePage() {
           })
         );
         if (active) setFeatured(results);
-      } catch (e: any) {
-        if (active) setErr(e?.message || "Failed to load");
+      } catch (e) {
+        if (active) {
+          const message = e instanceof Error ? e.message : "Failed to load";
+          setErr(message);
+        }
       } finally {
         if (active) setLoading(false);
       }
@@ -49,7 +52,7 @@ export default function HomePage() {
     return () => {
       active = false;
     };
-  }, [user, getMealsByCategory, retryKey]);
+  }, [user, getMealsByCategory, retryKey, picks]);
 
   return (
 

@@ -19,7 +19,7 @@ export default function MealPage() {
       try {
         const m = await getMealById(String(id));
         if (alive) {
-          setMeal(m as any);
+          setMeal(m);
           setErr(null);
         }
       } catch {

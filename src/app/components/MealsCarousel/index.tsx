@@ -22,8 +22,11 @@ export default function MealsCarousel({ category }: { category: string }) {
         if (!res.ok) throw new Error("Failed to load meals");
         const data: { meals?: Meal[] } = await res.json();
         if (alive) setMeals(data.meals ?? []);
-      } catch (e: any) {
-        if (alive) setError(e.message ?? "Error");
+      } catch (e) {
+        if (alive) {
+          const message = e instanceof Error ? e.message : "Error";
+          setError(message);
+        }
       }
     };
     run();
