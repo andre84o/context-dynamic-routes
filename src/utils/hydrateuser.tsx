@@ -19,7 +19,10 @@ export default function HydrateUser() {
             if (favRaw) {
               const favArr = JSON.parse(favRaw);
               if (Array.isArray(favArr)) {
-                u.favouriteRecipes = favArr.filter((x: any) => typeof x === 'string');
+                const onlyStrings = (favArr as unknown[]).filter(
+                  (x): x is string => typeof x === 'string'
+                );
+                u.favouriteRecipes = onlyStrings;
               }
             }
           } catch {}

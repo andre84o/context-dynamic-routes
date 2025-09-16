@@ -20,18 +20,27 @@ const LoginForm = () => {
       setUserNotFound(false);
     } else {
       setUserNotFound(true);
-      const baseUser = { ...loggedInUser[0] } as any;
+      // Start with a strongly typed base user
+      const baseUser: UserContextType["user"] = {
+        ...loggedInUser[0],
+        favouriteRecipes: Array.isArray(loggedInUser[0].favouriteRecipes)
+          ? [...(loggedInUser[0].favouriteRecipes as string[])]
+          : [],
+      };
       try {
-        const favRaw = localStorage.getItem(`favorites:${baseUser.name}`);
+        const favRaw = localStorage.getItem(`favorites:${baseUser!.name}`);
         if (favRaw) {
           const favArr = JSON.parse(favRaw);
           if (Array.isArray(favArr)) {
-            baseUser.favouriteRecipes = favArr.filter((x: any) => typeof x === 'string');
+            const onlyStrings = (favArr as unknown[]).filter(
+              (x): x is string => typeof x === "string"
+            );
+            baseUser!.favouriteRecipes = onlyStrings;
           }
         }
       } catch {}
-      if (!Array.isArray(baseUser.favouriteRecipes)) baseUser.favouriteRecipes = [];
-      setUser(baseUser);
+      if (!Array.isArray(baseUser!.favouriteRecipes)) baseUser!.favouriteRecipes = [];
+      setUser(baseUser as NonNullable<typeof baseUser>);
       localStorage.setItem("user", JSON.stringify(baseUser));
       router.push("/");
     }
