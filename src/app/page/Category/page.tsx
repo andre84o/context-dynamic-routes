@@ -76,12 +76,9 @@ export default function Home() {
             </p>
             <Link
               href={`/page/Category/${c.strCategory}`}
-              passHref
-              legacyBehavior
+              className="mt-auto px-3 py-1 border rounded btn-action cursor-pointer shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-[#E63E33] bg-white text-black group-hover:bg-[#E63E33]/10 group-hover:text-[#E63E33] text-center"
             >
-              <button className="mt-auto px-3 py-1 border rounded btn-action cursor-pointer shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-[#E63E33] bg-white text-black group-hover:bg-[#E63E33]/10 group-hover:text-[#E63E33]">
-                View
-              </button>
+              View
             </Link>
           </li>
         ))}

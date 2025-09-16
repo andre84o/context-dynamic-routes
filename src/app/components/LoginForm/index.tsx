@@ -20,8 +20,19 @@ const LoginForm = () => {
       setUserNotFound(false);
     } else {
       setUserNotFound(true);
-      setUser(loggedInUser[0]);
-      localStorage.setItem("user", JSON.stringify(loggedInUser[0]));
+      const baseUser = { ...loggedInUser[0] } as any;
+      try {
+        const favRaw = localStorage.getItem(`favorites:${baseUser.name}`);
+        if (favRaw) {
+          const favArr = JSON.parse(favRaw);
+          if (Array.isArray(favArr)) {
+            baseUser.favouriteRecipes = favArr.filter((x: any) => typeof x === 'string');
+          }
+        }
+      } catch {}
+      if (!Array.isArray(baseUser.favouriteRecipes)) baseUser.favouriteRecipes = [];
+      setUser(baseUser);
+      localStorage.setItem("user", JSON.stringify(baseUser));
       router.push("/");
     }
   };

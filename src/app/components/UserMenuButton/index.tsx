@@ -43,7 +43,7 @@ export default function UserMenuButton() {
           className="absolute right-0 mt-2 w-40 bg-white text-black border rounded shadow z-50 p-1"
         >
           <Link
-            href="/page/profile"
+            href="/page/Profile"
             className="block px-3 py-2 rounded hover:bg-gray-100"
             role="menuitem"
           >

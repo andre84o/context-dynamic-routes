@@ -65,11 +65,29 @@ export const UserContextProvider = ({
       setUser((prev) => {
         if (!prev) return prev;
         const merged = Array.from(new Set([...(prev.favouriteRecipes ?? []), ...guestFavorites]));
+        // Persist favourites per user
+        try {
+          localStorage.setItem(`favorites:${prev.name}`, JSON.stringify(merged));
+          // Backward compatibility: still update full user object
+          localStorage.setItem("user", JSON.stringify({ ...prev, favouriteRecipes: merged }));
+        } catch {}
         return { ...prev, favouriteRecipes: merged };
       });
       setGuestFavorites([]);
     }
   }, [user, closeLogin, guestFavorites]);
+
+  // Persist updated favourites whenever user object changes (debounced by direct state change)
+  React.useEffect(() => {
+    if (!user) return;
+    try {
+      if (Array.isArray(user.favouriteRecipes)) {
+        localStorage.setItem(`favorites:${user.name}`, JSON.stringify(user.favouriteRecipes));
+      }
+      // Also keep storing the complete user for existing logic
+      localStorage.setItem("user", JSON.stringify(user));
+    } catch {}
+  }, [user]);
 
   const addGuestFavorite = (id: string) => {
     if (user) return;

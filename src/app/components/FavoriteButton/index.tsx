@@ -42,6 +42,7 @@ export default function FavoriteButton({
     setUser(updated);
     try {
       localStorage.setItem("user", JSON.stringify(updated));
+      localStorage.setItem(`favorites:${updated.name}`, JSON.stringify(updated.favouriteRecipes));
     } catch {}
   };
 

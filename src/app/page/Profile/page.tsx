@@ -4,6 +4,7 @@ import type { UserContextType, Meal } from "@/utils/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import FavoriteButton from "@/components/FavoriteButton";
 
 export default function ProfilePage() {
   const { user, getMealById } = UseUserContext() as UserContextType;
@@ -37,38 +38,42 @@ export default function ProfilePage() {
         <h1 className="flex justify-center items-center font-bold p-2 mt-3">
           Profile Page
         </h1>
-
         {user ? (
           <div className="space-y-4">
             <p className="w-full p-2 border rounded-lg">Name: {user.name}</p>
             <p className="w-full p-2 border rounded-lg">
               Favourite Category: {user.favouriteCategory}
             </p>
-
             <div className="w-full p-2 border rounded-lg">
               <h2 className="font-semibold mb-2">All Favorites</h2>
               {err && <p className="text-sm text-red-600">{err}</p>}
-
               {meals.length ? (
                 <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                   {meals.map((meal) => (
                     <li
                       key={meal.idMeal}
-                      className="border rounded p-2 flex flex-col items-center"
+                      className="relative border rounded p-2 flex flex-col items-center bg-white/70 shadow-sm hover:shadow-md transition"
                     >
-                      <Link href={`/page/item/${meal.idMeal}`}>
-                        <Image
-                          src={meal.strMealThumb}
-                          alt={meal.strMeal}
-                          width={150}
-                          height={150}
-                          className="rounded"
-                        />
-                      </Link>
-                      <p className="mt-2 text-center text-sm">{meal.strMeal}</p>
+                      <div className="relative">
+                        <Link href={`/item/${meal.idMeal}`}>
+                          <Image
+                            src={meal.strMealThumb}
+                            alt={meal.strMeal}
+                            width={150}
+                            height={150}
+                            className="rounded object-cover"
+                          />
+                        </Link>
+                        <span className="absolute left-2 top-2 z-10">
+                          <FavoriteButton id={meal.idMeal} />
+                        </span>
+                      </div>
+                      <p className="mt-2 text-center text-sm font-medium line-clamp-2 px-1">
+                        {meal.strMeal}
+                      </p>
                       <Link
-                        href={`/page/item/${meal.idMeal}`}
-                        className="mt-auto px-3 py-1 border rounded btn-action cursor-pointer"
+                        href={`/item/${meal.idMeal}`}
+                        className="mt-auto px-3 py-1 border rounded btn-action cursor-pointer text-xs"
                       >
                         View
                       </Link>
