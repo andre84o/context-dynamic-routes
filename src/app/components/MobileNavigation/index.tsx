@@ -1,4 +1,3 @@
-// Fil: src/components/navigation/MobileNavigation.tsx
 "use client";
 
 import Link from "next/link";
@@ -23,15 +22,20 @@ export default function MobileNavigation() {
 
   return (
     <nav className="w-full flex justify-end relative md:hidden">
-      {/* Svensk kommentar: Hamburger öppnar och stänger dropdownmenyn */}
       <div className="px-2 py-2">
         <Hamburger toggled={open} toggle={setOpen} size={20} />
       </div>
+      {open && (
+        <div
+          className="fixed inset-0 z-40"
+          aria-hidden="true"
+          onClick={() => setOpen(false)}
+        />
+      )}
 
       {open && (
         <div
           role="menu"
-          // Svensk kommentar: mt-19 finns inte, använd arbitrary value
           className="absolute right-0 mt-20 w-44 bg-white border rounded shadow p-1 z-50"
         >
           {items.map(({ href, label }) => (
@@ -45,8 +49,6 @@ export default function MobileNavigation() {
               {label}
             </Link>
           ))}
-
-          {/* Profile / Login extra navigation */}
           {user && (
             <Link
               href="/page/Profile"
