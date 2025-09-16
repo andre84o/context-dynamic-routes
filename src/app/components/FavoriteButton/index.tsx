@@ -13,7 +13,7 @@ export default function FavoriteButton({
   id: string;
   className?: string;
 }) {
-  const { user, setUser, guestFavorites, addGuestFavorite, removeGuestFavorite } = UseUserContext() as UserContextType;
+  const { user, setUser, guestFavorites, addGuestFavorite, removeGuestFavorite, openLogin } = UseUserContext() as UserContextType;
 
   const isFav = useMemo(
     () => (user?.favouriteRecipes?.includes(id) || guestFavorites.includes(id)),
@@ -27,11 +27,7 @@ export default function FavoriteButton({
     }
 
     if (!user) {
-      if (guestFavorites.includes(id)) {
-        removeGuestFavorite(id);
-      } else {
-        addGuestFavorite(id);
-      }
+      openLogin();
       return;
     }
 
@@ -53,13 +49,7 @@ export default function FavoriteButton({
     <button
       onClick={toggle}
       aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
-      title={
-        user
-          ? isFav
-            ? "Remove from favorites"
-            : "Add to favorites"
-          : "Save as guest"
-      }
+      title={user ? (isFav ? "Remove from favorites" : "Add to favorites") : "Log in to save"}
   className={`p-1 btn-action cursor-pointer inline-flex items-center justify-center rounded-md bg-white/80 backdrop-blur hover:bg-white shadow-sm hover:shadow transition border border-black/10 ${className}`}
       type="button"
     >

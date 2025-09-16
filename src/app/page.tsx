@@ -149,12 +149,20 @@ export default function HomePage() {
                                 {cardInner}
                               </Link>
                             ) : (
-                              <button
+                              <div
+                                role="button"
+                                tabIndex={0}
                                 onClick={openLogin}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    openLogin();
+                                  }
+                                }}
                                 className="text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-black/40 rounded-md h-full"
                               >
                                 {cardInner}
-                              </button>
+                              </div>
                             )}
                           </li>
                         );
