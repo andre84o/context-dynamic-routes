@@ -7,6 +7,7 @@ import HydrateUser from "@/utils/hydrateuser";
 import LoginPortal from "./components/LoginPortal";
 import Footer from "./components/Footer";
 import { Suspense } from "react";
+import MobileNavigation from "./components/MobileNavigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +38,7 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <UserContextProvider>
             <HydrateUser />
-            <Header />
+            <Header /> 
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
             <LoginPortal />

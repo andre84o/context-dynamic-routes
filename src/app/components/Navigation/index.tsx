@@ -1,54 +1,23 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import Hamburger from "hamburger-react";
 import { UseUserContext } from "@/utils/context";
 import { UserContextType } from "@/utils/types";
-import LogoutButton from "@/components/LogoutButton";
-import LoginButton from "@/components/LoginButton";
 import UserMenuButton from "@/components/UserMenuButton";
+import LoginButton from "@/components/LoginButton";
 
 const items = [
   { href: "/", label: "Home" },
   { href: "/page/Category", label: "Category" },
- 
+  { href: "/page/about", label: "About" },
 ];
 
-export default function Navigation() {
+export default function DesktopNavigation() {
   const pathname = usePathname();
   const { user } = UseUserContext() as UserContextType;
-  const [open, setOpen] = useState(false);
 
   return (
-    <nav className="w-full flex justify-end relative">
-      <div className="block md:hidden">
-        <div className="px-2 py-2">
-          <Hamburger toggled={open} toggle={setOpen} size={20} />
-        </div>
-        {open && (
-          <div
-            role="menu"
-            className="absolute right-0 mt-2 w-44 bg-white border rounded shadow p-1 z-50"
-          >
-            {items.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setOpen(false)}
-                aria-current={pathname === href ? "page" : undefined}
-                className="block px-3 py-2 rounded hover:bg-gray-100 aria-[current=page]:bg-black aria-[current=page]:text-white"
-              >
-                {label}
-              </Link>
-            ))}
-            <div className="border-t my-1" />
-            <div className="px-3 py-2">
-              {user ? <LogoutButton /> : <LoginButton />}
-            </div>
-          </div>
-        )}
-      </div>
+    <nav className="w-full flex justify-end relative hidden md:block">
       <ul className="hidden md:flex w-full gap-2 list-none text-sm m-0 p-0 items-center">
         {items.map(({ href, label }) => {
           const isActive = pathname === href;
@@ -67,7 +36,7 @@ export default function Navigation() {
                 aria-[current=page]:hover:bg-white aria-[current=page]:hover:text-black
                 aria-[current=page]:hover:shadow-[0_0_1em_0.25em_#ff6b60,0_0_4em_1em_rgba(230,62,51,0.3),inset_0_0_0.75em_0.25em_#ff6b60]
                 active:shadow-[0_0_0.4em_0.1em_rgba(230,62,51,0.2),0_0_1em_0.3em_rgba(230,62,51,0.2),inset_0_0_0.3em_0.1em_rgba(230,62,51,0.2)]"
-            >
+              >
                 {label}
               </Link>
             </li>

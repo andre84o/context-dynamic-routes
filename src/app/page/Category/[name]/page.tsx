@@ -4,10 +4,10 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { UseUserContext } from "@/utils/context";
+import FavoriteButton from "@/components/FavoriteButton";
 import type { Meal, Category } from "@/utils/types";
 
 export default function CategoryPage() {
-  // Svenska: läs kategorinamnet från URL
   const { name } = useParams<{ name: string }>();
   const { user, setUser, getMealsByCategory, getCategories } = UseUserContext();
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -74,8 +74,11 @@ export default function CategoryPage() {
             className="relative border rounded-xl p-4 w-64 flex flex-col bg-white/80 shadow hover:shadow-lg transition group focus-within:ring-2 focus-within:ring-[#E63E33]"
           >
             <Link href={`/page/item/${meal.idMeal}`} className="block focus:outline-none">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md border border-black/5 bg-gradient-to-br from-black/10 to-[#E63E33]/10">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md border border-black/5 bg-gradient-to-br from-black/10 to-[#E63E33]/10 group">
                 <Image src={meal.strMealThumb} alt={meal.strMeal} fill sizes="256px" priority className="object-cover transition group-hover:scale-105" />
+                <div className="absolute top-2 left-2 z-10">
+                  <FavoriteButton id={meal.idMeal} />
+                </div>
                 <div className="absolute inset-0 rounded-md pointer-events-none bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>
               <h3 className="mt-3 text-sm font-semibold leading-tight line-clamp-2 group-hover:text-[#E63E33]">{meal.strMeal}</h3>

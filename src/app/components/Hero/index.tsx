@@ -11,7 +11,7 @@ export default function Hero() {
         <h2 className="text-3xl font-bold">Today’s Special</h2>
         <p className="mt-2 text-sm">Handpicked meal for today.</p>
         <Link
-          href="/page/category"
+          href="/page/Category"
           className="px-3 py-1 border rounded w-full text-center btn-action cursor-pointer"
         >
           View Menu

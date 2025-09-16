@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { UserContextType } from "@/utils/types";
 import { UseUserContext } from "@/utils/context";
-import FavoriteButton from "@/components/FavoriteButton";
 import { Category } from "@/utils/types";
 
 
@@ -51,9 +50,6 @@ export default function Home() {
               <a href={`/page/Category/${c.strCategory}`} className="group relative flex flex-col h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-black/40 rounded-md">
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md border border-black/5 bg-black/5">
                   <Image src={c.strCategoryThumb} alt={c.strCategory} fill sizes="256px" className="object-cover" />
-                  <span className="absolute left-4 top-4 z-20">
-                    <FavoriteButton id={String(c.idCategory)} className="" />
-                  </span>
                 </div>
                 <h2 className="mt-3 text-sm font-semibold leading-tight line-clamp-2">{c.strCategory}</h2>
                 <p className="mt-1 text-xs text-gray-700 line-clamp-3">{c.strCategoryDescription}</p>

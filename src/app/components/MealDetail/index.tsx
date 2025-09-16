@@ -31,7 +31,7 @@ export default function MealDetail({ id, showRelated = true }: MealDetailProps) 
             if (alive) {
               setRelated(more.filter(mm => mm.idMeal !== String(id)).slice(0, 8));
             }
-          } catch {/* ignore related errors */}
+          } catch {/* ignorera relaterade fel */}
         } else if (!showRelated) {
           setRelated([]);
         }
@@ -61,14 +61,22 @@ export default function MealDetail({ id, showRelated = true }: MealDetailProps) 
   if (!meal) return <div className="p-6">Loading...</div>;
 
   return (
-    <div className="flex flex-col gap-8">
-      <section className="flex flex-col md:flex-row gap-8 items-start">
+    <div className="flex flex-col gap-8 overflow-x-hidden">
+      <section className="flex flex-col md:flex-row gap-8 items-start w-full ">
         <div className="relative w-full max-w-xs aspect-[4/3] rounded-xl overflow-hidden shadow border border-black/5">
-          <Image src={meal.strMealThumb} alt={meal.strMeal} fill sizes="320px" className="object-cover" />
+          <Image
+            src={meal.strMealThumb}
+            alt={meal.strMeal}
+            fill
+            sizes="(min-width: 768px) 320px, 100vw"
+            className="object-cover"
+          />
         </div>
-        <div className="flex-1 flex flex-col gap-2">
+        <div className="flex-1 min-w-0 flex flex-col gap-2">
           <h1 className="text-2xl font-bold mb-2">{meal.strMeal}</h1>
-          <p className="text-sm text-gray-700 mb-2">{meal.strCategory} &middot; {meal.strArea}</p>
+          <p className="text-sm text-gray-700 mb-2">
+            {meal.strCategory} &middot; {meal.strArea}
+          </p>
           <div className="flex items-center gap-2 mb-4">
             <FavoriteButton id={meal.idMeal} />
             {meal.strYoutube && (
@@ -82,18 +90,24 @@ export default function MealDetail({ id, showRelated = true }: MealDetailProps) 
               </a>
             )}
           </div>
+
           <h2 className="text-lg font-semibold mt-4 mb-2">Ingredients</h2>
           <ul className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
             {ingredients.map((row, idx) => (
               <li key={idx} className="text-sm">
-                <span className="font-medium">{row.ingredient}</span>{row.measure ? `: ${row.measure}` : ""}
+                <span className="font-medium">{row.ingredient}</span>
+                {row.measure ? `: ${row.measure}` : ""}
               </li>
             ))}
           </ul>
+
           <h2 className="text-lg font-semibold mt-4 mb-2">Instructions</h2>
-          <p className="whitespace-pre-line text-sm text-gray-800 mb-4">{meal.strInstructions}</p>
+          <p className="whitespace-pre-line break-words text-sm text-gray-800 mb-4">
+            {meal.strInstructions}
+          </p>
         </div>
       </section>
+
       {showRelated && meal.strCategory && related.length > 0 && (
         <section className="mt-4">
           <h3 className="text-md font-semibold mb-3">More from {meal.strCategory}</h3>
@@ -102,9 +116,17 @@ export default function MealDetail({ id, showRelated = true }: MealDetailProps) 
               <li key={r.idMeal} className="min-w-[160px] max-w-[180px]">
                 <Link href={`/page/item/${r.idMeal}`} className="block group">
                   <div className="relative aspect-[4/3] w-full rounded-md overflow-hidden border shadow">
-                    <Image src={r.strMealThumb} alt={r.strMeal} fill sizes="160px" className="object-cover group-hover:scale-105 transition" />
+                    <Image
+                      src={r.strMealThumb}
+                      alt={r.strMeal}
+                      fill
+                      sizes="160px"
+                      className="object-cover group-hover:scale-105 transition"
+                    />
                   </div>
-                  <div className="mt-2 text-xs font-medium group-hover:text-[#E63E33] line-clamp-2">{r.strMeal}</div>
+                  <div className="mt-2 text-xs font-medium group-hover:text-[#E63E33] line-clamp-2">
+                    {r.strMeal}
+                  </div>
                 </Link>
               </li>
             ))}

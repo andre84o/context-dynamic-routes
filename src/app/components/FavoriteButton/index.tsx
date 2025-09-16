@@ -21,7 +21,10 @@ export default function FavoriteButton({
   );
 
   const toggle = (e?: React.MouseEvent<HTMLButtonElement>) => {
-    e?.stopPropagation();
+    if (e) {
+      e.stopPropagation();
+      if (e.preventDefault) e.preventDefault();
+    }
 
     if (!user) {
       if (guestFavorites.includes(id)) {
@@ -57,7 +60,7 @@ export default function FavoriteButton({
             : "Add to favorites"
           : "Save as guest"
       }
-      className={`p-1 -translate-y-7 -translate-x-7 btn-action cursor-pointer${className}`}
+  className={`p-1 btn-action cursor-pointer inline-flex items-center justify-center rounded-md bg-white/80 backdrop-blur hover:bg-white shadow-sm hover:shadow transition border border-black/10 ${className}`}
       type="button"
     >
       {isFav ? <FaHeart size={22} color="#E63E33" /> : <CiHeart size={24} />}

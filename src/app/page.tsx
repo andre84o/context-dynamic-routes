@@ -9,6 +9,7 @@ import Hero from "@/components/Hero";
 import MealsCarousel from "@/components/MealsCarousel";
 import FavoritesSection from "@/components/FavoritesSection";
 import LoginModal from "@/components/LoginPopupModal";
+import FavoriteButton from "@/components/FavoriteButton";
 
 export default function HomePage() {
   const { user, getMealsByCategory, openLogin, showLogin, closeLogin } =
@@ -70,20 +71,20 @@ export default function HomePage() {
           {!user ? (
             <>
               <Hero />
-              <section>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-semibold">Popular this week</h2>
+              <section className="flex flex-col items-center text-center md:text-left md:items-stretch">
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-4 w-full">
+                  <h2 className="text-2xl font-semibold w-full md:w-auto">Popular this week</h2>
                   {err && (
                     <button
                       onClick={() => setRetryKey((v) => v + 1)}
-                      className="text-xs underline"
+                      className="text-xs underline self-center md:self-auto"
                     >
                       Retry
                     </button>
                   )}
                 </div>
-                {err && <p className="text-sm text-red-600 mb-2">{err}</p>}
-                <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                {err && <p className="text-sm text-red-600 mb-2 w-full">{err}</p>}
+                <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 place-items-center md:place-items-stretch w-full">
                   {loading
                     ? picks.map((p: string) => (
                         <li
@@ -119,6 +120,9 @@ export default function HomePage() {
                                 sizes="256px"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                               />
+                              <div className="absolute top-2 left-2 z-10">
+                                <FavoriteButton id={meal.idMeal} />
+                              </div>
                             </div>
                             <h3 className="mt-3 text-sm font-semibold leading-tight line-clamp-2">
                               {meal.strMeal}

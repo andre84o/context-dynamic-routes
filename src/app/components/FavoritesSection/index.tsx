@@ -13,31 +13,36 @@ export default function FavoritesSection({
   showAll?: boolean;
 }) {
   const { getMealById, user, guestFavorites } = UseUserContext();
-  const idsToLoad = (user ? (showAll ? ids : ids.slice(-3)) : guestFavorites.slice(-3)).reverse();
+
+  const baseIds = user ? ids : guestFavorites;
+  const fetchCandidateIds = showAll ? baseIds : baseIds.slice(-8);
+  const fetchKey = fetchCandidateIds.join(",");
 
   const [meals, setMeals] = useState<Meal[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const idsKey = idsToLoad.join(",");
   useEffect(() => {
-    if (!idsToLoad.length) {
+    if (!fetchCandidateIds.length) {
       setMeals([]);
       setErr(null);
       return;
     }
     let active = true;
-    const load = async () => {
+    (async () => {
       try {
         setLoading(true);
         setErr(null);
-        const res = await Promise.all(
-          idsToLoad.map((id: string) => getMealById(String(id)))
+        const results = await Promise.all(
+          fetchCandidateIds.map((id) => getMealById(String(id)))
         );
-        if (active) {
-          setMeals(res.filter(Boolean) as Meal[]);
-          setErr(null);
-        }
+        if (!active) return;
+        const valid = (results.filter(Boolean) as Meal[]);
+        const orderedValid = fetchCandidateIds
+          .map(id => valid.find(m => m.idMeal === id))
+          .filter(Boolean) as Meal[];
+        const finalMeals = showAll ? orderedValid : orderedValid.slice(-3).reverse(); // reverse -> newest first for display
+        setMeals(finalMeals);
       } catch {
         if (active) {
           setErr("Failed to load favorites");
@@ -46,24 +51,21 @@ export default function FavoritesSection({
       } finally {
         if (active) setLoading(false);
       }
-    };
-    load();
-    return () => {
-      active = false;
-    };
-  }, [idsKey, getMealById]);
+    })();
+    return () => { active = false; };
+  }, [fetchKey, getMealById, showAll]);
 
   return (
-    <section>
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-semibold">
+    <section className="w-full flex flex-col items-center">
+      <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between items-center gap-2 mb-4 text-center">
+        <h2 className="text-2xl font-semibold w-full text-center sm:text-left">
           {showAll ? "All Favorites" : "Your last 3 favorites"}
         </h2>
       </div>
-      {err && <p className="text-sm text-red-600 mb-2">{err}</p>}
+      {err && <p className="text-sm text-red-600 mb-2 text-center">{err}</p>}
       {loading && !meals.length ? (
-        <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          {(idsToLoad.length ? idsToLoad : ["1","2","3"]).slice(0,3).map((k: string) => (
+        <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 place-items-center w-full">
+          {(fetchCandidateIds.length ? fetchCandidateIds.slice(-3) : ["1","2","3"]).map((k: string) => (
             <li key={String(k)} className="animate-pulse border rounded-xl p-3 flex flex-col gap-3 bg-white w-full max-w-72">
               <div className="aspect-[4/3] w-full rounded-md bg-black/10" />
               <div className="h-4 bg-black/10 rounded w-3/4" />
@@ -73,9 +75,9 @@ export default function FavoritesSection({
           ))}
         </ul>
       ) : !meals.length ? (
-        <p className="text-sm">No favorites yet.</p>
+        <p className="text-sm text-center">No favorites yet.</p>
       ) : (
-        <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+        <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 place-items-center w-full">
           {meals.map((meal) => {
             const card = (
               <div className="group relative flex flex-col h-full">
@@ -88,10 +90,10 @@ export default function FavoritesSection({
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <h3 className="mt-3 text-sm font-semibold leading-tight line-clamp-2">
+                <h3 className="mt-3 text-sm font-semibold leading-tight line-clamp-2 text-center">
                   {meal.strMeal}
                 </h3>
-                <span className="mt-auto pt-3 text-xs text-blue-600 group-hover:underline">View details</span>
+                <span className="mt-auto pt-3 text-xs text-blue-600 group-hover:underline text-center">View details</span>
               </div>
             );
             return (
