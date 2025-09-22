@@ -22,20 +22,13 @@ export default function DesktopNavigation() {
         {items.map(({ href, label }) => {
           const isActive = pathname === href;
           return (
-            <li key={href} className="md:flex-1 min-w-0 rounded">
+            <li key={href} className="rounded">
               <Link
                 href={href}
                 aria-current={isActive ? "page" : undefined}
-                className="btn-action block w-full px-2 h-8 rounded border flex items-center justify-center text-sm truncate
-                bg-black text-white
-                aria-[current=page]:bg-white aria-[current=page]:text-black aria-[current=page]:border-white
-                shadow-[0_0_1em_0.25em_#ff6b60,0_0_4em_1em_rgba(230,62,51,0.3),inset_0_0_0.75em_0.25em_#ff6b60]
-                transition-all duration-300
-                hover:bg-transparent hover:text-inherit
-                hover:shadow-[0_0_0.2em_0.1em_rgba(230,62,51,0.15),0_0_0.5em_0.2em_rgba(230,62,51,0.1),inset_0_0_0.3em_0.1em_rgba(230,62,51,0.15)]
-                aria-[current=page]:hover:bg-white aria-[current=page]:hover:text-black
-                aria-[current=page]:hover:shadow-[0_0_1em_0.25em_#ff6b60,0_0_4em_1em_rgba(230,62,51,0.3),inset_0_0_0.75em_0.25em_#ff6b60]
-                active:shadow-[0_0_0.4em_0.1em_rgba(230,62,51,0.2),0_0_1em_0.3em_rgba(230,62,51,0.2),inset_0_0_0.3em_0.1em_rgba(230,62,51,0.2)]"
+                className={`btn-action inline-flex px-4 h-9 items-center justify-center rounded text-sm truncate border font-medium ${
+                  isActive ? "btn-primary text-white" : "glass text-slate-700"
+                }`}
               >
                 {label}
               </Link>

@@ -31,14 +31,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-two-colors min-h-screen flex flex-col`}
       >
         <Suspense fallback={null}>
           <UserContextProvider>
             <HydrateUser />
-            <Header /> 
+            <Header />
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
             <LoginPortal />

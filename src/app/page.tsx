@@ -58,14 +58,7 @@ export default function HomePage() {
   return (
 
     <main className="relative min-h-[calc(100dvh-48px)] overflow-x-clip">
-      <Image
-        src="/foodie-1-bg.png"
-        alt="Background foodie"
-        fill
-        sizes="100vw"
-        className="absolute inset-0 -z-10 object-cover translate-y-6 scale-105 blur-sm opacity-60"
-        priority
-      />
+      
       <div className="font-sans flex flex-col items-center justify-center text-black min-h-[calc(100dvh-48px)] bg-white/0 relative z-10">
         <section className="p-6 w-full max-w-5xl flex flex-col gap-8">
           {!user ? (
@@ -73,11 +66,11 @@ export default function HomePage() {
               <Hero />
               <section className="flex flex-col items-center text-center md:text-left md:items-stretch">
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-4 w-full">
-                  <h2 className="text-2xl font-semibold w-full md:w-auto">Popular this week</h2>
+                  <h2 className="text-2xl font-semibold w-full md:w-auto text-gradient">Popular this week</h2>
                   {err && (
                     <button
                       onClick={() => setRetryKey((v) => v + 1)}
-                      className="text-xs underline self-center md:self-auto"
+                      className="btn-action btn-secondary text-xs px-3 py-1 rounded self-center md:self-auto"
                     >
                       Retry
                     </button>
@@ -89,7 +82,7 @@ export default function HomePage() {
                     ? picks.map((p: string) => (
                         <li
                           key={p}
-                          className="animate-pulse border rounded-xl p-3 flex flex-col gap-3 bg-white w-full max-w-72"
+                          className="animate-pulse card p-3 flex flex-col gap-3 bg-white w-full max-w-72"
                         >
                           <div className="aspect-[4/3] w-full rounded-md bg-black/10" />
                           <div className="h-4 bg-black/10 rounded w-3/4" />
@@ -102,7 +95,7 @@ export default function HomePage() {
                           return (
                             <li
                               key={cat}
-                              className="border rounded-xl p-3 flex flex-col justify-center items-center text-sm bg-white"
+                              className="card p-4 flex flex-col justify-center items-center text-sm bg-white"
                             >
                               <p className="text-center opacity-70">
                                 No meal found for {cat}
@@ -118,7 +111,7 @@ export default function HomePage() {
                                 alt={meal.strMeal}
                                 fill
                                 sizes="256px"
-                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                className="object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
                               />
                               <div className="absolute top-2 left-2 z-10">
                                 <FavoriteButton id={meal.idMeal} />
@@ -139,7 +132,7 @@ export default function HomePage() {
                         return (
                           <li
                             key={cat}
-                            className="border rounded-xl p-3 border-gray-200 flex flex-col bg-white/40 shadow-sm hover:shadow-md transition w-full max-w-72 shadow-sm"
+                            className="card p-3 flex flex-col bg-white/60 transition w-full max-w-72"
                           >
                             {user ? (
                               <Link

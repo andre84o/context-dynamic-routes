@@ -30,9 +30,9 @@ export default function UserMenuButton() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className={`h-10 w-10 flex items-center justify-center rounded border 
-                    text-white border-white/40 hover:bg-white/10 
-                    ${open ? "btn-action cursor-pointer ring-2 ring-white/60 bg-white/10" : ""}`}
+        className={`h-10 w-10 flex items-center justify-center rounded-lg glass text-slate-700
+                    hover:shadow-md transition-shadow
+                    ${open ? "ring-2 ring-purple-300" : ""}`}
         title="User menu"
       >
         <CiUser size={22} />

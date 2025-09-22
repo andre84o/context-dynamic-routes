@@ -17,7 +17,7 @@ export default function LoginButton() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="bg-white btn-action text-black px-3 py-1 rounded border cursor-pointer w-25 h-8"
+        className="btn-action btn-secondary px-3 h-9 rounded cursor-pointer"
       >
         Sign in
       </button>
@@ -29,7 +29,7 @@ export default function LoginButton() {
         >
           <div
             onClick={stop}
-            className="bg-white rounded shadow p-4 w-full max-w-md"
+            className="bg-white rounded shadow p-4 w-full max-w-md mt-170"
           >
             <div className="flex justify-between items-center mb-2">
               <h2 className="text-lg font-semibold">Sign in</h2>

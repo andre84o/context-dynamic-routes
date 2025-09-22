@@ -17,10 +17,15 @@ export default function LoginPopupModal({
         onClick={onClose}
         className="absolute inset-0 bg-black/40"
       />
-      <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl w-full max-w-md shadow-lg p-6">
+      <div className="absolute inset-0 flex items-start md:items-center justify-center p-4 pt-24 md:pt-4 overflow-y-auto">
+        <div
+          className="bg-white rounded-2xl w-full max-w-md shadow-lg p-6 max-h-[85vh] overflow-y-auto"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="login-modal-title"
+        >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Log in</h2>
+            <h2 id="login-modal-title" className="text-lg font-semibold">Log in</h2>
             <button
               onClick={onClose}
               aria-label="Close"

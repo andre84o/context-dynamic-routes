@@ -10,7 +10,7 @@ const Header = () => {
   const { user } = UseUserContext() as UserContextType;
 
   return (
-    <header className="relative w-full h-20 bg-black text-white grid grid-cols-3 items-center px-4">
+    <header className="sticky top-0 z-50 w-full h-20 glass grid grid-cols-3 items-center px-4">
       <div className="justify-self-start flex items-center gap-3">
         <Link href="/">
           <Image
@@ -21,10 +21,10 @@ const Header = () => {
             priority
           />
         </Link>
-        {user && <p className="text-sm">Welcome, {user.name}</p>}
+        {user && <p className="text-sm text-slate-700">Welcome, {user.name}</p>}
       </div>
-      <h1 className="justify-self-center text-xl font-semibold">Recipes</h1>
-      <div className="justify-self-end w-80">
+      <h1 className="justify-self-center text-xl font-semibold text-gradient">Recipes</h1>
+      <div className="justify-self-end flex items-center gap-2">
         <Navigation /> 
         <MobileNavigation />
       </div>
