@@ -58,7 +58,6 @@ export default function HomePage() {
   return (
 
     <main className="relative min-h-[calc(100dvh-48px)] overflow-x-clip">
-      
       <div className="font-sans flex flex-col items-center justify-center text-black min-h-[calc(100dvh-48px)] bg-white/0 relative z-10">
         <section className="p-6 w-full max-w-5xl flex flex-col gap-8">
           {!user ? (

@@ -29,7 +29,7 @@ export default function LoginButton() {
         >
           <div
             onClick={stop}
-            className="bg-white rounded shadow p-4 w-full max-w-md mt-170"
+            className="bg-white rounded shadow p-4 w-full max-w-md md:mt-190 mt-170"
           >
             <div className="flex justify-between items-center mb-2">
               <h2 className="text-lg font-semibold">Sign in</h2>
